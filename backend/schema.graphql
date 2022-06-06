@@ -1,0 +1,32 @@
+type Query {
+  session(sessionId: ID!): Session!
+}
+
+type Mutation {
+  createSession(name: String!): Session!
+}
+
+type Subscription {
+  watchSession(sessionId: ID!): Message!
+}
+
+# Sessions
+
+type Session {
+  id: ID!
+  name: String!
+  created: Timestamp!
+  messages: [Message!]!
+}
+
+type Message {
+  message: String!
+  timestamp: Timestamp!
+}
+
+# Utility types
+
+type Timestamp {
+  # Timestamp in ISO format
+  Timestamp: String!
+}
