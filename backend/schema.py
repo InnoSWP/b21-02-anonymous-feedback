@@ -1,3 +1,4 @@
+import asyncio
 import typing
 import datetime
 
@@ -13,15 +14,15 @@ class Query:
 
 @strawberry.type
 class Mutation:
-    @strawberry.field
+    @strawberry.mutation
     def create_session(self, name: str) -> 'Session':
         pass
 
 
 @strawberry.type
 class Subscription:
-    @strawberry.field
-    def watch_session(self, id: strawberry.ID) -> 'Message':
+    @strawberry.subscription
+    async def watch_session(self, id: strawberry.ID) -> 'Message':
         pass
 
 
