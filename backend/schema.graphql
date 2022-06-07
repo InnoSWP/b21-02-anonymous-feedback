@@ -1,5 +1,5 @@
 type Query {
-  session(sessionId: ID!): Session!
+  session(id: ID!): Session!
 }
 
 type Mutation {
@@ -7,7 +7,7 @@ type Mutation {
 }
 
 type Subscription {
-  watchSession(sessionId: ID!): Message!
+  watchSession(id: ID!): Message!
 }
 
 # Sessions
