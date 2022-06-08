@@ -1,0 +1,36 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres
+    volumes:
+      # TODO: find out why use that
+      # - app-db-data:/var/lib/postgresql/data/pgdata
+      - ${DOCKER_PROJECT_PATH:-.}/data/pgdata:/var/lib/postgresql/data/pgdata
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_PASSWORD
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    # deploy:
+    #   placement:
+    #     constraints:
+    #       - node.labels.${STACK_NAME?Variable not set}.app-db-data == true
+
+  bot:
+    build: ./bot
+    environment:
+      - BOT_API_TOKEN
+    volumes:
+      - ${DOCKER_PROJECT_PATH:-.}/bot:/app
+    command: sh -c 'wait-for -t 15 db:5432 -- python main.py'
+
+  backend:
+    build: ./backend
+    volumes:
+      #TODO: duplicate
+      - ${DOCKER_PROJECT_PATH:-.}/backend:/app
+    command: sh -c 'wait-for db:5432 -- strawberry export-schema schema:schema'
+
+# volumes:
+#   app-db-data:

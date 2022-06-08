@@ -1,11 +1,6 @@
 FROM python:3.10-alpine AS builder
 
-RUN apk update && \
-    apk add --no-cache build-essential gcc musl-dev
-
-ENV VENV_PATH="/opt/venv"
-
-RUN python -m venv $VENV_PATH
+RUN python -m venv /opt/venv
 # Make sure we use the virtualenv:
 ENV PATH="/opt/venv/bin:$PATH"
 
@@ -13,8 +8,13 @@ COPY requirements.txt .
 RUN pip install -r requirements.txt
 
 FROM python:3.10-alpine AS development
-COPY --from=builder $VENV_PATH $VENV_PATH
+COPY --from=builder /opt/venv /opt/venv
+
+RUN wget -P /usr/bin https://raw.githubusercontent.com/eficode/wait-for/v2.2.3/wait-for
+RUN chmod +x /usr/bin/wait-for
 
 # Make sure we use the virtualenv:
 ENV PATH="/opt/venv/bin:$PATH"
+
+WORKDIR /app
 CMD python main.py

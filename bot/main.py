@@ -1,9 +1,13 @@
-"""This is a echo bot.It echoes any incoming text messages."""
+"""
+This is a echo bot.
+It echoes any incoming text messages.
+"""
 
 import logging
+import os
 from aiogram import Bot, Dispatcher, executor, types
 
-API_TOKEN = 'BOT TOKEN HERE'
+API_TOKEN = os.environ["BOT_API_TOKEN"]
 
 logging.basicConfig(level=logging.INFO)
 
