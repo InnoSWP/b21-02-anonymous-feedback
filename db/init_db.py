@@ -3,7 +3,7 @@ from tortoise.utils import get_schema_sql
 
 async def main():
     await Tortoise.init(
-        db_url="postgres://postgres:password@127.0.0.1:5432/maindb",
+        db_url="postgres://postgres:password@db:5432/maindb",
         modules={"models": ["models"]},
     )
     await Tortoise.generate_schemas()
