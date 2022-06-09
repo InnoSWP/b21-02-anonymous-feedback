@@ -26,14 +26,18 @@ services:
       - BOT_API_TOKEN
     volumes:
       - ${DOCKER_PROJECT_PATH:-.}/bot:/app
-    command: sh -c 'wait-for -t 15 db:5432 -- python db/init_db.py && python main.py'
+      - ${DOCKER_PROJECT_PATH:-.}/db:/db
+    command: sh -c 'wait-for -t 15 db:5432 -- python ../db/init_db.py && python main.py'
 
   backend:
     build: ./backend
     volumes:
       #TODO: duplicate
       - ${DOCKER_PROJECT_PATH:-.}/backend:/app
-    command: sh -c 'wait-for db:5432 -- strawberry export-schema schema:schema'
+      - ${DOCKER_PROJECT_PATH:-.}/db:/db
+    ports:
+      - "80:80"
+    command: sh -c 'wait-for db:5432 -- python ../db/init_db.py && uvicorn --host 0.0.0.0 --port 80 main:app'
 
   # pgadmin:
   #   image: dpage/pgadmin4

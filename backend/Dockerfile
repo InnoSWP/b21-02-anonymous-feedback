@@ -1,9 +1,13 @@
 FROM python:3.10-alpine AS builder
 
+RUN apk update && apk upgrade
+RUN apk add --no-cache gcc make musl-dev
+
 RUN python -m venv /opt/venv
 # Make sure we use the virtualenv:
 ENV PATH="/opt/venv/bin:$PATH"
 
+RUN pip install -U setuptools pip
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 
