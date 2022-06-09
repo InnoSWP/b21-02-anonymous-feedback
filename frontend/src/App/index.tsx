@@ -1,5 +1,9 @@
+import "./style.scss";
+
+import SignIn from "../SignIn";
+
 const App = () => {
-  return null;
+  return <SignIn />;
 };
 
 export default App;
