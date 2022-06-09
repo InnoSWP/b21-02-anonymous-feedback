@@ -1,3 +1,8 @@
+@use "@fontsource/noto-sans/scss/mixins" as NotoSans;
+
+@include NotoSans.fontFace($weight: 400);
+@include NotoSans.fontFace($weight: 600);
+
 * {
   box-sizing: border-box;
 }
