@@ -1,11 +1,16 @@
+import { ReactNode } from "react";
 import Wrapper from "../Wrapper";
 import "./style.scss";
 
-const Landing = () => {
+interface Props {
+  children: ReactNode;
+}
+
+const Landing = ({ children }: Props) => {
   return (
     <div className="landing">
       <Wrapper>
-        <main className="landing_content"></main>
+        <main className="landing_content">{children}</main>
       </Wrapper>
     </div>
   );
