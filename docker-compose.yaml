@@ -33,6 +33,7 @@ services:
     volumes:
       #TODO: duplicate
       - ${DOCKER_PROJECT_PATH:-.}/backend:/app
+      - ${DOCKER_PROJECT_PATH:-.}/db:/app/db
     ports:
       - "80:80"
     command: sh -c 'wait-for db:5432 -- uvicorn --host 0.0.0.0 --port 80 main:app'

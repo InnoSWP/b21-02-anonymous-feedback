@@ -15,6 +15,8 @@ class Session(Model):
     name = fields.CharField(max_length=32)
     created_at = fields.DatetimeField(auto_now_add=True)
 
+    messages: fields.ReverseRelation['Message']
+
 
 class Message(Model):
     # TODO: is it too big/small ?
