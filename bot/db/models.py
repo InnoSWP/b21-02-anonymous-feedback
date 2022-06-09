@@ -12,6 +12,7 @@ class Student(Model):
         return f"f{self.telegram_id}"
 
 class Session(Model):
+    id = fields.CharField(pk=True, max_length=6)
     name = fields.CharField(max_length=32)
     created_at = fields.DatetimeField(auto_now_add=True)
 
