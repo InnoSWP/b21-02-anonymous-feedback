@@ -9,7 +9,10 @@ services:
       - ${DOCKER_PROJECT_PATH:-.}/data/pgdata:/var/lib/postgresql/data/pgdata
     env_file:
       - .env
+    ports:
+      - 5432:5432
     environment:
+      - POSTGRES_DB=maindb
       - POSTGRES_PASSWORD
       - PGDATA=/var/lib/postgresql/data/pgdata
     # deploy:
@@ -23,7 +26,7 @@ services:
       - BOT_API_TOKEN
     volumes:
       - ${DOCKER_PROJECT_PATH:-.}/bot:/app
-    command: sh -c 'wait-for -t 15 db:5432 -- python main.py'
+    command: sh -c 'wait-for -t 15 db:5432 -- python db/init_db.py && python main.py'
 
   backend:
     build: ./backend
@@ -31,6 +34,19 @@ services:
       #TODO: duplicate
       - ${DOCKER_PROJECT_PATH:-.}/backend:/app
     command: sh -c 'wait-for db:5432 -- strawberry export-schema schema:schema'
+
+  # pgadmin:
+  #   image: dpage/pgadmin4
+  #   restart: always
+  #   environment:
+  #       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_USER}
+  #       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
+  #   ports:
+  #       - "5050:80"
+  #   volumes:
+  #       # Don't forget to set owner:group for this dir as 5050:5050
+  #       # (sudo chown -R 5050:5050 <this path>)
+  #       - ${DOCKER_PROJECT_PATH:-.}/data/pgadmin:/var/lib/pgadmin
 
 # volumes:
 #   app-db-data:
