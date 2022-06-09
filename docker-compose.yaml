@@ -12,7 +12,7 @@ services:
     ports:
       - 5432:5432
     environment:
-      - POSTGRES_DB=maindb
+      - POSTGRES_USER
       - POSTGRES_PASSWORD
       - PGDATA=/var/lib/postgresql/data/pgdata
     # deploy:
