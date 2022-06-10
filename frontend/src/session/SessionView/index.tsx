@@ -3,6 +3,7 @@ import "./style.scss";
 import Button from "../../Button";
 import Connected from "./Connected";
 import { useSession } from "../Session";
+import NoMessages from "./NoMessages";
 
 const SessionView = () => {
   const session = useSession();
@@ -18,6 +19,7 @@ const SessionView = () => {
       </header>
       <main className="sessionView_content">
         <Connected />
+        {session.messages.length === 0 && <NoMessages />}
       </main>
     </>
   );

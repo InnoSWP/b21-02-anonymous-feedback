@@ -1,0 +1,22 @@
+@use "../../../colors.scss";
+
+.noMessages {
+  color: colors.$main;
+
+  &_text {
+    font-size: 36px;
+    line-height: 48px;
+    font-weight: 500;
+
+    margin: 0 0 8px;
+    opacity: 0.5;
+  }
+
+  &_help {
+    font-size: 18px;
+    line-height: 24px;
+
+    margin: 0;
+    opacity: 0.4;
+  }
+}
