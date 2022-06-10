@@ -1,7 +1,7 @@
 @use "../colors.scss";
 
 .button {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 16px;
 
@@ -11,6 +11,8 @@
   font-family: inherit;
   font-weight: 600;
   color: white;
+  text-decoration: none;
+  cursor: default;
 
   transition-property: background-color, box-shadow, color;
   transition-duration: 200ms;
@@ -32,7 +34,8 @@
     color: rgb(0 0 0 / 0.15);
   }
 
-  &:enabled {
+  &:is(button:enabled),
+  &:is(a) {
     box-shadow: 0 2px 4px rgb(var(--shadowColor) / 0.2),
       0 4px 8px rgb(var(--shadowColor) / 0.1);
 
