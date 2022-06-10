@@ -1,9 +1,12 @@
+import asyncio
 import typing
 import datetime
 
 import strawberry
+import asyncpg_listen
 
 from db import models
+from backend.config import DB_URL
 
 
 @strawberry.type
@@ -26,9 +29,23 @@ class Mutation:
 @strawberry.type
 class Subscription:
     @strawberry.subscription
-    async def watch_session(self, id: strawberry.ID) -> "Message":
+    async def watch_session(self, id: strawberry.ID) -> typing.AsyncGenerator["Message", None]:
+        queue = asyncio.Queue()
+
+        async def get_message_id(
+                notification: asyncpg_listen.Notification
+        ) -> None:
+            queue.put_nowait(int(notification.payload))
+
         # TODO: wait for notify from bot
-        pass
+        listener = asyncpg_listen.NotificationListener(asyncpg_listen.connect_func(DB_URL))
+        asyncio.create_task(
+            listener.run({id: get_message_id}, policy=asyncpg_listen.ListenPolicy.LAST,
+                         notification_timeout=asyncpg_listen.NO_TIMEOUT))
+        while True:
+            message_id = await queue.get()
+            if message_id is not None:
+                yield Message.from_model(await models.Message.get(pk=message_id))
 
 
 @strawberry.type
