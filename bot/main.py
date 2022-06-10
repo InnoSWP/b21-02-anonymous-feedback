@@ -42,7 +42,7 @@ class SessionState(StatesGroup):
 
 
 @dp.message_handler(commands=['start', 'help'])
-async def send_welcome(message: types.Message):
+async def send_welcome(message: types.Message, state: FSMContext):
     """
     This handler will be called when user sends `/start` or `/help` command
     """
@@ -74,7 +74,7 @@ async def send_welcome(message: types.Message):
             parse_mode=types.ParseMode.MARKDOWN
         )
         await SessionState.in_session.set()
-        await SessionState.in_session.set
+        await state.update_data(session_id=session_id)
 
 
 @dp.message_handler(state=SessionState.in_session)
