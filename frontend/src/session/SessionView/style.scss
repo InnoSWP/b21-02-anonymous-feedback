@@ -1,0 +1,23 @@
+.sessionView {
+  &_header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    align-self: stretch;
+  }
+
+  &_name {
+    font-size: 48px;
+    line-height: 64px;
+    font-weight: 700;
+
+    margin: 0;
+    cursor: default;
+  }
+
+  &_controls {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+}
