@@ -4,6 +4,8 @@ import { Navigate, Route, Routes } from "react-router";
 import SignIn from "../landing/SignIn";
 import Landing from "../landing/Landing";
 import NewSession from "../landing/NewSession";
+import Session from "../session/Session";
+import SessionView from "../session/SessionView";
 
 const App = () => {
   return (
@@ -12,7 +14,9 @@ const App = () => {
         <Route index element={<SignIn />} />
         <Route path="new-session" element={<NewSession />} />
       </Route>
-      <Route path="/session/:id" element={null} />
+      <Route path="/session/:id" element={<Session />}>
+        <Route index element={<SessionView />} />
+      </Route>
       <Route path="*" element={<Navigate to="/" replace={true} />} />
     </Routes>
   );
