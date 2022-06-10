@@ -15,6 +15,7 @@ RUN chmod +x /usr/bin/wait-for
 
 # Make sure we use the virtualenv:
 ENV PATH="/opt/venv/bin:$PATH"
+ENV PYTHONPATH="${PYTHONPATH}:/app"
 
 WORKDIR /app
 CMD python main.py

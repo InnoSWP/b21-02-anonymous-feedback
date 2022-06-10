@@ -1,21 +1,44 @@
-"""
-This is a echo bot.
-It echoes any incoming text messages.
-"""
-
 import logging
+
 from aiogram import Bot, Dispatcher, types
+from aiogram.contrib.fsm_storage.memory import MemoryStorage
+from aiogram.dispatcher.filters.state import StatesGroup, State
 from aiogram.utils.executor import Executor
-from tortoise import run_async
-from models import setup
+from aiogram.dispatcher import FSMContext
+from tortoise import Tortoise
+import asyncpg
+
 import config
+from db.models import Session, Message
+
+
+async def on_startup(dispatcher: Dispatcher):
+    await Tortoise.init(config=config.TORTOISE_ORM)
+    await Tortoise.generate_schemas()
+
+
+async def on_shutdown(dispatcher: Dispatcher):
+    await Tortoise.close_connections()
+
+
+def setup(runner: Executor):
+    runner.on_startup(on_startup)
+    runner.on_shutdown(on_shutdown)
+
 
 logging.basicConfig(level=logging.INFO)
 
+storage = MemoryStorage()
+
 bot = Bot(token=config.API_TOKEN)
-dp = Dispatcher(bot)
+dp = Dispatcher(bot, storage)
 runner = Executor(dp)
 setup(runner)
+
+
+class SessionState(StatesGroup):
+    no_session = State()
+    in_session = State()
 
 
 @dp.message_handler(commands=['start', 'help'])
@@ -34,28 +57,37 @@ async def send_welcome(message: types.Message):
         )
         return
 
-    session_id = args[0]
+    session_id = int(args[0])
 
-    # TODO: get from DB
+    session = await Session.get_or_none(pk=session_id)
 
-    if False:
+    if session is None:
         await message.reply(
             f"Cannot find session with id {session_id}!",
             parse_mode=types.ParseMode.MARKDOWN
         )
+    else:
+        await message.reply(
+            (f"You joined \"*{session.name}*\" feedback session!\n\n"
+             "Send me a message and I will deliver it to the TA anonymously. "
+             "Consider scheduling messages to stay unnoticed."),
+            parse_mode=types.ParseMode.MARKDOWN
+        )
+        await SessionState.in_session.set()
+        await SessionState.in_session.set
 
-    session_name = "TCS Lecture"
-    await message.reply(
-        (f"You joined \"*{session_name}*\" feedback session!\n\n"
-         "Send me a message and I will deliver it to the TA anonymously. "
-         "Consider sсheduling messages to stay unnoticed."),
-        parse_mode=types.ParseMode.MARKDOWN
-    )
 
-
-@dp.message_handler()
-async def echo(message: types.Message):
-    await message.answer(message.text)
+@dp.message_handler(state=SessionState.in_session)
+async def handle_message(message: types.Message, state: FSMContext):
+    session_id = await state.get_data("session_id")
+    saved_message = await Message.create(message=message.text, session_id=session_id)
+    conn = await asyncpg.connect(config.POSTGRES_DB)
+    await conn.execute('''
+        NOTIFY $1, $2;
+    ''', session_id, saved_message.pk)
+    await message.answer("Feedback sent!\n\n"
+                         "You can send more messages to the TA by simply texting it to me. "
+                         "Consider scheduling messages to stay unnoticed.")
 
 
 async def create_data():
@@ -65,4 +97,4 @@ async def create_data():
 
 if __name__ == '__main__':
     # run_async(create_data())
-    runner.start_polling()
+    runner.start_polling(dp)

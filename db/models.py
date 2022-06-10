@@ -20,7 +20,7 @@ class Session(Model):
 class Message(Model):
     # TODO: is it too big/small ?
     message = fields.CharField(max_length=4000)
-    timestamp = fields.DatetimeField()
+    timestamp = fields.DatetimeField(auto_now_add=True)
     session: fields.ForeignKeyRelation[Session] = fields.ForeignKeyField(
         model_name='models.Session',
         related_name='messages',

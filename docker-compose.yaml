@@ -30,9 +30,9 @@ services:
       - POSTGRES_DB
       - POSTGRES_HOST=db
     volumes:
-      - ${DOCKER_PROJECT_PATH:-.}/bot:/app
-      # - ${DOCKER_PROJECT_PATH:-.}/db:/db
-    command: sh -c 'wait-for -t 15 db:5432 -- python main.py'
+      - ${DOCKER_PROJECT_PATH:-.}/bot:/app/bot
+      - ${DOCKER_PROJECT_PATH:-.}/db:/app/db
+    command: sh -c 'wait-for -t 15 db:5432 -- python bot/main.py'
 
   backend:
     build: ./backend
