@@ -1,19 +1,10 @@
-import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
+import { ApolloProvider } from "@apollo/client";
 import React from "react";
 import ReactDom from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
-import App from "./App";
 
-const client = new ApolloClient({
-  uri: `/graphql`,
-  cache: new InMemoryCache(),
-  defaultOptions: {
-    query: {
-      fetchPolicy: `no-cache`,
-      errorPolicy: `all`,
-    },
-  },
-});
+import App from "./App";
+import client from "./client";
 
 const root = ReactDom.createRoot(document.getElementById(`root`)!);
 root.render(
