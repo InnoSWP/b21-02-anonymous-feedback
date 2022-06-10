@@ -1,10 +1,24 @@
 .message {
   &_text {
-    background: white;
+    background-color: white;
     border-radius: 12px 12px 12px 0;
     padding: 16px;
     box-shadow: 0 2px 4px rgb(50 107 193 / 0.1),
       0 4px 8px rgb(50 107 193 / 0.05);
     margin: 0;
+
+    &.-recent {
+      animation-name: recentMessage;
+      animation-duration: 3s;
+      animation-timing-function: ease-out;
+    }
+  }
+}
+
+@keyframes recentMessage {
+  from {
+    background-color: #fcfdbf;
+    box-shadow: 0 2px 4px rgb(181 184 20 / 0.1),
+      0 4px 8px rgb(181 184 20 / 0.05);
   }
 }

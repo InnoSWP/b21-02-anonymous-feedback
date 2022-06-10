@@ -1,5 +1,5 @@
 import { gql, useQuery, useSubscription } from "@apollo/client";
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { Session as RawSession, Message as RawMessage } from "../../types";
 
 const SESSION_QUERY = gql`
@@ -45,12 +45,16 @@ export interface Message {
   timestamp: Date;
 }
 
-export interface Session {
+export interface SessionInfo {
   id: string;
   name: string;
-  messages: Message[];
 }
-type SessionInfo = Omit<Session, "messages">;
+
+export interface Session extends SessionInfo {
+  messages: Message[];
+  recentMessages: Set<Message>;
+  removeRecentMessage(message: Message): void;
+}
 
 const processMessage = (
   { message, timestamp: { Timestamp: timestamp } }: RawMessage,
@@ -64,6 +68,17 @@ const processMessage = (
 const useWatchSession = (id: string): Session | null => {
   const [sessionInfo, setSessionInfo] = useState<SessionInfo | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
+
+  const [recentMessages, setRecentMessages] = useState<Set<Message>>(new Set());
+  const removeRecentMessage = useCallback(
+    (message: Message) =>
+      setRecentMessages((recentMessages) => {
+        const newRecentMessages = new Set(recentMessages);
+        newRecentMessages.delete(message);
+        return newRecentMessages;
+      }),
+    []
+  );
 
   useQuery<SessionQueryResult, Variables>(SESSION_QUERY, {
     variables: { id },
@@ -81,17 +96,18 @@ const useWatchSession = (id: string): Session | null => {
       }
 
       const message = processMessage(data!.message, messages.length);
+      setRecentMessages(new Set([...recentMessages, message]));
       setMessages([...messages, message]);
     },
   });
 
   const session = useMemo(() => {
     if (sessionInfo) {
-      return { ...sessionInfo, messages };
+      return { ...sessionInfo, messages, recentMessages, removeRecentMessage };
     }
 
     return null;
-  }, [messages, sessionInfo]);
+  }, [messages, recentMessages, removeRecentMessage, sessionInfo]);
 
   return session;
 };

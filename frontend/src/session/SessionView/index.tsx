@@ -22,7 +22,11 @@ const SessionView = () => {
         <Connected />
         {session.messages.length === 0 && <NoMessages />}
         {session.messages.length > 0 && (
-          <Messages messages={session.messages} />
+          <Messages
+            messages={session.messages}
+            recentMessages={session.recentMessages}
+            onDatedMessage={session.removeRecentMessage}
+          />
         )}
       </main>
     </>
