@@ -1,4 +1,10 @@
+@use "../../../colors.scss";
+
 .message {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+
   &_text {
     background-color: white;
     border-radius: 12px 12px 12px 0;
@@ -12,6 +18,14 @@
       animation-duration: 3s;
       animation-timing-function: ease-out;
     }
+  }
+
+  &_age {
+    font-size: 12px;
+    line-height: 16px;
+    color: colors.$main;
+    opacity: 0.5;
+    margin: 0;
   }
 }
 
