@@ -1,0 +1,51 @@
+@use "../colors.scss";
+
+.iconButton {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  position: relative;
+  border: none;
+  border-radius: 50%;
+  background: none;
+  padding: 0;
+
+  &.-main {
+    --iconColor: #{colors.$main};
+  }
+
+  &.-iu {
+    --iconColor: #{colors.$iu};
+  }
+
+  &.-red {
+    --iconColor: #{colors.$red};
+  }
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: -8px;
+    left: -8px;
+    width: 48px;
+    height: 48px;
+
+    background-color: var(--iconColor);
+    border-radius: 50%;
+    opacity: 0;
+
+    transition-property: opacity;
+    transition-duration: 150ms;
+  }
+
+  &:hover::before {
+    opacity: 0.1;
+  }
+
+  &:active::before {
+    opacity: 0.3;
+  }
+}

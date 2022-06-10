@@ -2,6 +2,7 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:80/",
   "dependencies": {
     "@apollo/client": "^3.6.6",
     "@fontsource/noto-sans": "^4.5.10",

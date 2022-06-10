@@ -1,7 +1,9 @@
+@use "../colors.scss";
 @use "@fontsource/noto-sans/scss/mixins" as NotoSans;
 
 @include NotoSans.fontFace($weight: 400);
 @include NotoSans.fontFace($weight: 600);
+@include NotoSans.fontFace($weight: 700);
 
 * {
   box-sizing: border-box;
@@ -10,4 +12,5 @@
 body {
   margin: 0;
   font-family: "Noto Sans", sans-serif;
+  color: colors.$text;
 }

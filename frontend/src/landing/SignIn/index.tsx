@@ -9,7 +9,7 @@ const SignIn = () => {
       <p className="signIn_description">
         Collect anonymous feedback from students during classes in real time
       </p>
-      <Button>Create a guest session</Button>
+      <Button to="/new-session">Create a guest session</Button>
     </>
   );
 };
