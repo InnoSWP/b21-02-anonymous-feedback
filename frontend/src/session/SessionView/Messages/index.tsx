@@ -10,7 +10,7 @@ interface Props {
 export const Messages = ({ messages }: Props) => {
   return (
     <ul className="messages">
-      {messages.map((message) => (
+      {[...messages].reverse().map((message) => (
         <Message key={message.id} message={message} />
       ))}
     </ul>
