@@ -6,8 +6,9 @@ export interface Session {
 }
 
 export interface Message {
+  id: string;
   message: string;
-  timestamp: string;
+  timestamp: Timestamp;
 }
 
 export interface Timestamp {

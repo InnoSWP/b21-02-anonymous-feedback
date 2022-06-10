@@ -4,6 +4,7 @@ import Button from "../../Button";
 import Connected from "./Connected";
 import { useSession } from "../Session";
 import NoMessages from "./NoMessages";
+import { Messages } from "./Messages";
 
 const SessionView = () => {
   const session = useSession();
@@ -20,6 +21,9 @@ const SessionView = () => {
       <main className="sessionView_content">
         <Connected />
         {session.messages.length === 0 && <NoMessages />}
+        {session.messages.length > 0 && (
+          <Messages messages={session.messages} />
+        )}
       </main>
     </>
   );
