@@ -1,4 +1,5 @@
 import logging
+import typing
 
 from aiogram import Bot, Dispatcher, types
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
@@ -34,6 +35,8 @@ bot = Bot(token=config.API_TOKEN)
 dp = Dispatcher(bot, storage)
 runner = Executor(dp)
 setup(runner)
+
+states: typing.Dict[int, int] = {}
 
 
 class SessionState(StatesGroup):
@@ -73,21 +76,26 @@ async def send_welcome(message: types.Message, state: FSMContext):
              "Consider scheduling messages to stay unnoticed."),
             parse_mode=types.ParseMode.MARKDOWN
         )
-        await SessionState.in_session.set()
-        await state.update_data(session_id=session_id)
+        # await SessionState.in_session.set()
+        # await state.update_data(session_id=session_id)
+        states[message.from_user.id] = session_id
 
 
-@dp.message_handler(state=SessionState.in_session)
-async def handle_message(message: types.Message, state: FSMContext):
-    session_id = await state.get_data("session_id")
-    saved_message = await Message.create(message=message.text, session_id=session_id)
-    conn = await asyncpg.connect(config.POSTGRES_DB)
-    await conn.execute('''
-        NOTIFY $1, $2;
-    ''', session_id, saved_message.pk)
-    await message.answer("Feedback sent!\n\n"
-                         "You can send more messages to the TA by simply texting it to me. "
-                         "Consider scheduling messages to stay unnoticed.")
+@dp.message_handler()
+async def handle_message(message: types.Message):
+    # session_id = await state.get_data("session_id")
+    session_id = states.get(message.from_user.id)
+    if session_id:
+        # session_id = await state.get_data("session_id")
+        saved_message = await Message.create(message=message.text, session_id=session_id)
+        conn = await asyncpg.connect("postgres://postgres:password@db:5432/")
+        await conn.execute(f'''
+            NOTIFY "{session_id}", '{saved_message.pk}';
+        ''')
+        await conn.close()
+        await message.answer("Feedback sent!\n\n"
+                             "You can send more messages to the TA by simply texting it to me. "
+                             "Consider scheduling messages to stay unnoticed.")
 
 
 async def create_data():
