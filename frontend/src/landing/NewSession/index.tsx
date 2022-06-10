@@ -6,15 +6,22 @@ import IconButton from "../../IconButton";
 import { ReactComponent as BackIcon } from "../../icons/backArrow.svg";
 import { useNavigate } from "react-router";
 import TextInput from "../../TextInput";
+import useCreateSession from "./useCreateSession";
 
 const NewSession = () => {
-  const [name, setName] = useState(``);
-  const handleSubmit = useCallback((event: FormEvent) => {
-    event.preventDefault();
-  }, []);
-
   const navigate = useNavigate();
   const goBack = useCallback(() => navigate(-1), [navigate]);
+
+  const [name, setName] = useState(``);
+  const createSession = useCreateSession();
+  const handleSubmit = useCallback(
+    async (event: FormEvent) => {
+      event.preventDefault();
+      const id = await createSession(name);
+      navigate(`/session/${id}`);
+    },
+    [createSession, name, navigate]
+  );
 
   return (
     <>

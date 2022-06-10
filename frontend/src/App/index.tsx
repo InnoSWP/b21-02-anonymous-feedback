@@ -12,6 +12,7 @@ const App = () => {
         <Route index element={<SignIn />} />
         <Route path="new-session" element={<NewSession />} />
       </Route>
+      <Route path="/session/:id" element={null} />
       <Route path="*" element={<Navigate to="/" replace={true} />} />
     </Routes>
   );
