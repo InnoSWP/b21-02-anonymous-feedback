@@ -44,6 +44,14 @@ services:
       - "80:80"
     command: sh -c 'wait-for db:5432 -- uvicorn --host 0.0.0.0 --port 80 backend.main:app'
 
+
+#  frontend:
+#    build: ./frontend
+#    volumes:
+#      - ${DOCKER_PROJECT_PATH:-.}/frontend:/app
+#    ports:
+#      - "80:80"
+#    command: npm start
   # pgadmin:
   #   image: dpage/pgadmin4
   #   restart: always
