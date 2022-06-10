@@ -10,7 +10,10 @@ from db import models
 class Query:
     @strawberry.field
     async def session(self, id: strawberry.ID) -> "Session":
-        return Session.from_model(await models.Session.get(id=id).prefetch_related("messages"))
+        return Session.from_model(
+            await models.Session.get(id=id).prefetch_related("messages"),
+            True
+        )
 
 
 @strawberry.type
@@ -36,12 +39,15 @@ class Session:
     messages: typing.List["Message"]
 
     @classmethod
-    def from_model(cls, session: models.Session):
+    def from_model(cls, session: models.Session, are_messages_fetched=False):
         return Session(
             id=strawberry.ID(session.pk),
             name=session.name,
-            created=session.created_at,
-            messages=[Message.from_model(message) for message in session.messages]
+            created=Timestamp(session.created_at),
+            messages=(
+                [Message.from_model(message) for message in session.messages]
+                if are_messages_fetched else []
+            )
         )
 
 
@@ -52,7 +58,8 @@ class Message:
 
     @classmethod
     def from_model(cls, message: models.Message):
-        return Message(message=message.message, timestamp=message.timestamp)
+        return Message(message=message.message,
+                       timestamp=Timestamp(message.timestamp))
 
 
 # Utility types

@@ -33,11 +33,11 @@ services:
     build: ./backend
     volumes:
       #TODO: duplicate
-      - ${DOCKER_PROJECT_PATH:-.}/backend:/app
-      - ${DOCKER_PROJECT_PATH:-.}/db:/db
+      - ${DOCKER_PROJECT_PATH:-.}/backend:/app/backend
+      - ${DOCKER_PROJECT_PATH:-.}/db:/app/db
     ports:
       - "80:80"
-    command: sh -c 'wait-for db:5432 -- python ../db/init_db.py && uvicorn --host 0.0.0.0 --port 80 main:app'
+    command: sh -c 'wait-for db:5432 -- uvicorn --host 0.0.0.0 --port 80 backend.main:app'
 
   # pgadmin:
   #   image: dpage/pgadmin4
