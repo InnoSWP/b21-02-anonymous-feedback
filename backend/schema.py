@@ -44,7 +44,9 @@ class Subscription:
         while True:
             message_id = await queue.get()
             if message_id is not None:
-                yield Message.from_model(await models.Message.get(pk=message_id))
+                message = await models.Message.get_or_none(pk=message_id)
+                if message is not None:
+                    yield Message.from_model(message)
 
 
 @strawberry.type
