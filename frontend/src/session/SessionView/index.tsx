@@ -1,6 +1,7 @@
 import "./style.scss";
 
 import Button from "../../Button";
+import Connected from "./Connected";
 
 const SessionView = () => {
   return (
@@ -12,6 +13,9 @@ const SessionView = () => {
           <Button color="red">Close the session</Button>
         </div>
       </header>
+      <main className="sessionView_content">
+        <Connected />
+      </main>
     </>
   );
 };
