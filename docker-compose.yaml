@@ -14,6 +14,7 @@ services:
     environment:
       - POSTGRES_USER
       - POSTGRES_PASSWORD
+      - POSTGRES_DB
       - PGDATA=/var/lib/postgresql/data/pgdata
     # deploy:
     #   placement:
@@ -24,10 +25,14 @@ services:
     build: ./bot
     environment:
       - BOT_API_TOKEN
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB
+      - POSTGRES_HOST=db
     volumes:
       - ${DOCKER_PROJECT_PATH:-.}/bot:/app
-      - ${DOCKER_PROJECT_PATH:-.}/db:/db
-    command: sh -c 'wait-for -t 15 db:5432 -- python ../db/init_db.py && python main.py'
+      # - ${DOCKER_PROJECT_PATH:-.}/db:/db
+    command: sh -c 'wait-for -t 15 db:5432 -- python main.py'
 
   backend:
     build: ./backend
