@@ -1,15 +1,25 @@
+import "./style.scss";
+
 import { FormEvent, useCallback } from "react";
 import Button from "../../Button";
-import "./style.scss";
+import IconButton from "../../IconButton";
+import { ReactComponent as BackIcon } from "../../icons/backArrow.svg";
+import { useNavigate } from "react-router";
 
 const NewSession = () => {
   const handleSubmit = useCallback((event: FormEvent) => {
     event.preventDefault();
   }, []);
 
+  const navigate = useNavigate();
+  const goBack = useCallback(() => navigate(-1), [navigate]);
+
   return (
     <>
       <header className="newSession_header">
+        <IconButton onClick={goBack}>
+          <BackIcon />
+        </IconButton>
         <h1 className="newSession_title">Create a guest session</h1>
       </header>
       <p className="newSession_help">
