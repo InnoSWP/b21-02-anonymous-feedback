@@ -37,7 +37,6 @@ class Subscription:
         ) -> None:
             queue.put_nowait(int(notification.payload))
 
-        # TODO: wait for notify from bot
         listener = asyncpg_listen.NotificationListener(asyncpg_listen.connect_func(DB_URL))
         asyncio.create_task(
             listener.run({id: get_message_id}, policy=asyncpg_listen.ListenPolicy.LAST,
