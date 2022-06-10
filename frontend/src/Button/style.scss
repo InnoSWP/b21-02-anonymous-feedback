@@ -1,0 +1,80 @@
+@use "../colors.scss";
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+
+  border-radius: 12px;
+  border: none;
+
+  font-family: inherit;
+  font-weight: 600;
+  color: white;
+  text-decoration: none;
+  cursor: default;
+
+  transition-property: background-color, box-shadow, color;
+  transition-duration: 200ms;
+
+  &.-small {
+    font-size: 18px;
+    line-height: 24px;
+    padding: 8px 16px;
+  }
+
+  &.-big {
+    font-size: 24px;
+    line-height: 32px;
+    padding: 16px;
+  }
+
+  &:disabled {
+    background-color: rgb(0 0 0 / 0.2);
+    color: rgb(0 0 0 / 0.15);
+  }
+
+  &:is(button:enabled),
+  &:is(a) {
+    box-shadow: 0 2px 4px rgb(var(--shadowColor) / 0.2),
+      0 4px 8px rgb(var(--shadowColor) / 0.1);
+
+    &:hover {
+      box-shadow: 0 4px 8px rgb(var(--shadowColor) / 0.2),
+        0 8px 16px rgb(var(--shadowColor) / 0.1);
+    }
+
+    &:active {
+      color: rgb(255 255 255 / 0.75);
+      box-shadow: 0 2px 4px rgb(var(--shadowColor) / 0.5) inset,
+        0 4px 8px rgb(var(--shadowColor) / 0.25) inset;
+    }
+
+    &.-main {
+      background-color: colors.$main;
+      --shadowColor: #{colors.$main_shadow};
+
+      &:hover:not(:active) {
+        background-color: colors.$main_hovered;
+      }
+    }
+
+    &.-iu {
+      background-color: colors.$iu;
+      --shadowColor: #{colors.$iu_shadow};
+
+      &:hover:not(:active) {
+        background-color: colors.$iu_hovered;
+      }
+    }
+
+    &.-red {
+      background-color: colors.$red;
+      --shadowColor: #{colors.$red_shadow};
+
+      &:hover:not(:active) {
+        background-color: colors.$red_hovered;
+      }
+    }
+  }
+}

@@ -1,0 +1,45 @@
+.landing {
+  display: flex;
+  align-items: center;
+  justify-content: stretch;
+  height: 100vh;
+
+  $shadow: radial-gradient(
+    circle farthest-side at calc(50vw - 256px) center,
+    rgb(0 0 0 / 0.75),
+    rgb(0 0 0 / 0.5)
+  );
+
+  background-image: $shadow, url("background/background@4k.jpg");
+  background-image: $shadow,
+    image-set(
+      url("background/background@2k.avif") 1x type("image/avif"),
+      url("background/background@2k.webp") 1x type("image/webp"),
+      url("background/background@2k.jpg") 1x type("image/jpeg"),
+      url("background/background@4k.avif") 2x type("image/avif"),
+      url("background/background@4k.webp") 2x type("image/webp"),
+      url("background/background@4k.jpg") 2x type("image/jpeg")
+    );
+  background-color: #595c66;
+  background-position: center;
+  background-size: cover;
+
+  @media (min-width: 2400px) {
+    background-image: $shadow,
+      image-set(
+        url("background/background@4k.avif") type("image/avif"),
+        url("background/background@4k.webp") type("image/webp"),
+        url("background/background@4k.jpg") type("image/jpeg")
+      );
+  }
+
+  &_content {
+    max-width: 768px;
+    width: 100%;
+    padding: 64px;
+    border-radius: 12px;
+    background: white;
+
+    box-shadow: 0 4px 8px rgb(0 0 0 / 0.1), 0 8px 16px rgb(0 0 0 / 0.1);
+  }
+}

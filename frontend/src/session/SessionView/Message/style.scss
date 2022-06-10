@@ -1,0 +1,10 @@
+.message {
+  &_text {
+    background: white;
+    border-radius: 12px 12px 12px 0;
+    padding: 16px;
+    box-shadow: 0 2px 4px rgb(50 107 193 / 0.1),
+      0 4px 8px rgb(50 107 193 / 0.05);
+    margin: 0;
+  }
+}
