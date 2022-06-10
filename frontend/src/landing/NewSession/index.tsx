@@ -1,12 +1,14 @@
 import "./style.scss";
 
-import { FormEvent, useCallback } from "react";
+import { FormEvent, useCallback, useState } from "react";
 import Button from "../../Button";
 import IconButton from "../../IconButton";
 import { ReactComponent as BackIcon } from "../../icons/backArrow.svg";
 import { useNavigate } from "react-router";
+import TextInput from "../../TextInput";
 
 const NewSession = () => {
+  const [name, setName] = useState(``);
   const handleSubmit = useCallback((event: FormEvent) => {
     event.preventDefault();
   }, []);
@@ -27,7 +29,12 @@ const NewSession = () => {
         joining.
       </p>
       <form className="newSession_form" onSubmit={handleSubmit}>
-        <input className="newSession_name" type="text" />
+        <TextInput
+          className="newSession_name"
+          value={name}
+          onChange={setName}
+          placeholder="DSA Lab"
+        />
         <Button type="submit">Create the session</Button>
       </form>
     </>
