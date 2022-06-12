@@ -7,10 +7,10 @@ export interface Session {
 
 export interface Message {
   id: string;
-  message: string;
+  text: string;
   timestamp: Timestamp;
 }
 
 export interface Timestamp {
-  Timestamp: string;
+  timestamp: string;
 }

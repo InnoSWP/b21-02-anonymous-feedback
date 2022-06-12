@@ -20,7 +20,8 @@ type Session {
 }
 
 type Message {
-  message: String!
+  id: ID!
+  text: String!
   timestamp: Timestamp!
 }
 
@@ -28,5 +29,5 @@ type Message {
 
 type Timestamp {
   # Timestamp in ISO format
-  Timestamp: String!
+  timestamp: String!
 }

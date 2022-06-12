@@ -36,7 +36,8 @@ class Session:
 
 @strawberry.type
 class Message:
-    message: str
+    id: strawberry.ID
+    text: str
     timestamp: "Timestamp"
 
 
@@ -46,7 +47,7 @@ class Message:
 @strawberry.type
 class Timestamp:
     # Timestamp in ISO format
-    Timestamp: datetime.time
+    timestamp: datetime.time
 
 
 schema = strawberry.Schema(Query, Mutation, Subscription)
