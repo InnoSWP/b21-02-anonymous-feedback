@@ -9,7 +9,7 @@ const SESSION_QUERY = gql`
       messages {
         message
         timestamp {
-          Timestamp
+          timestamp
         }
       }
     }
@@ -25,7 +25,7 @@ const MESSAGE_SUBSCRIPTION = gql`
     message: watchSession(id: $id) {
       message
       timestamp {
-        Timestamp
+        timestamp
       }
     }
   }
@@ -57,7 +57,7 @@ export interface Session extends SessionInfo {
 }
 
 const processMessage = (
-  { message, timestamp: { Timestamp: timestamp } }: RawMessage,
+  { message, timestamp: { timestamp } }: RawMessage,
   index: number
 ): Message => ({
   id: String(index),

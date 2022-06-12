@@ -12,5 +12,5 @@ export interface Message {
 }
 
 export interface Timestamp {
-  Timestamp: string;
+  timestamp: string;
 }
