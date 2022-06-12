@@ -1,0 +1,69 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres
+    volumes:
+      # TODO: find out why use that
+      # - app-db-data:/var/lib/postgresql/data/pgdata
+      - ${DOCKER_PROJECT_PATH:-.}/data/pgdata:/var/lib/postgresql/data/pgdata
+    env_file:
+      - .env
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    # deploy:
+    #   placement:
+    #     constraints:
+    #       - node.labels.${STACK_NAME?Variable not set}.app-db-data == true
+
+  bot:
+    build: ./bot
+    environment:
+      - BOT_API_TOKEN
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB
+      - POSTGRES_HOST=db
+    volumes:
+      - ${DOCKER_PROJECT_PATH:-.}/bot:/app/bot
+      - ${DOCKER_PROJECT_PATH:-.}/db:/app/db
+    command: sh -c 'wait-for -t 15 db:5432 -- python bot/main.py'
+
+  backend:
+    build: ./backend
+    volumes:
+      #TODO: duplicate
+      - ${DOCKER_PROJECT_PATH:-.}/backend:/app/backend
+      - ${DOCKER_PROJECT_PATH:-.}/db:/app/db
+    ports:
+      - "80:80"
+    command: sh -c 'wait-for db:5432 -- uvicorn --host 0.0.0.0 --port 80 backend.main:app'
+
+
+#  frontend:
+#    build: ./frontend
+#    volumes:
+#      - ${DOCKER_PROJECT_PATH:-.}/frontend:/app
+#    ports:
+#      - "80:80"
+#    command: npm start
+  # pgadmin:
+  #   image: dpage/pgadmin4
+  #   restart: always
+  #   environment:
+  #       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_USER}
+  #       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
+  #   ports:
+  #       - "5050:80"
+  #   volumes:
+  #       # Don't forget to set owner:group for this dir as 5050:5050
+  #       # (sudo chown -R 5050:5050 <this path>)
+  #       - ${DOCKER_PROJECT_PATH:-.}/data/pgadmin:/var/lib/pgadmin
+
+# volumes:
+#   app-db-data:

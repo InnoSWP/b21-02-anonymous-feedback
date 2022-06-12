@@ -1,2 +1,5 @@
-.vscode/
-.devcontainer/
+.vscode
+.devcontainer
+.env
+data
+.idea
