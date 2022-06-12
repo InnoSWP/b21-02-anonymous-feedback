@@ -36,6 +36,7 @@ class Session:
 
 @strawberry.type
 class Message:
+    id: strawberry.ID
     message: str
     timestamp: "Timestamp"
 

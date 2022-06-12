@@ -7,6 +7,7 @@ const SESSION_QUERY = gql`
     session(id: $id) {
       name
       messages {
+        id
         message
         timestamp {
           timestamp
@@ -23,6 +24,7 @@ interface SessionQueryResult {
 const MESSAGE_SUBSCRIPTION = gql`
   subscription ($id: ID!) {
     message: watchSession(id: $id) {
+      id
       message
       timestamp {
         timestamp
@@ -56,11 +58,12 @@ export interface Session extends SessionInfo {
   removeRecentMessage(message: Message): void;
 }
 
-const processMessage = (
-  { message, timestamp: { timestamp } }: RawMessage,
-  index: number
-): Message => ({
-  id: String(index),
+const processMessage = ({
+  id,
+  message,
+  timestamp: { timestamp },
+}: RawMessage): Message => ({
+  id,
   message,
   timestamp: new Date(timestamp),
 });
@@ -95,7 +98,7 @@ const useWatchSession = (id: string): Session | null => {
         throw error;
       }
 
-      const message = processMessage(data!.message, messages.length);
+      const message = processMessage(data!.message);
       setRecentMessages(new Set([...recentMessages, message]));
       setMessages([...messages, message]);
     },
