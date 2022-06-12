@@ -19,7 +19,7 @@ const Message = ({ message, isRecent, onDated }: Props) => {
         className={classNames(`message_text`, { "-recent": isRecent })}
         onAnimationEnd={onDated}
       >
-        {message.message}
+        {message.text}
       </p>
       <p className="message_age">{age}</p>
     </li>
