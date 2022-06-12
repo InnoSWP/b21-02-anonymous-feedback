@@ -77,7 +77,7 @@ class Message:
 
     @classmethod
     def from_model(cls, message: models.Message):
-        return Message(message=message.message,
+        return Message(id=strawberry.ID(message.pk), text=message.message,
                        timestamp=Timestamp(message.timestamp))
 
 
