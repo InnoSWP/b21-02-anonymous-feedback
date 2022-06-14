@@ -3,3 +3,4 @@ starlette~=0.20.2
 uvicorn[standard]~=0.17.6
 tortoise-orm[asyncpg]~=0.19.1
 asyncpg_listen~=0.0.5
+starlette-session~=0.4.2
