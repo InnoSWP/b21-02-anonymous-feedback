@@ -6,7 +6,8 @@ import { createClient } from "graphql-ws";
 const httpLink = new HttpLink({ uri: `/graphql` });
 
 const subscriptionUrlParsed = new URL(window.location.origin);
-subscriptionUrlParsed.protocol = `ws:`;
+subscriptionUrlParsed.protocol =
+  subscriptionUrlParsed.protocol === `https:` ? `wss:` : `ws:`;
 subscriptionUrlParsed.pathname = `/graphql`;
 const subscriptionUrl = subscriptionUrlParsed.toString();
 const wsLink = new GraphQLWsLink(createClient({ url: subscriptionUrl }));
