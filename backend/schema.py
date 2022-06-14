@@ -22,7 +22,7 @@ class CanViewSession(BasePermission):
         selected_field = next(filter(lambda f: f.name == "session", info.selected_fields), None)
         if selected_field is not None:
             session_id = selected_field.arguments["id"]
-            return int(session_id) == int(request.session.get("session_id"))
+            return str(session_id) == str(request.session.get("session_id"))
         return False
 
 
