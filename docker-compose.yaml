@@ -32,7 +32,7 @@ services:
     volumes:
       - ${DOCKER_PROJECT_PATH:-.}/bot:/app/bot
       - ${DOCKER_PROJECT_PATH:-.}/db:/app/db
-    command: sh -c 'wait-for -t 15 db:5432 -- python bot/main.py'
+    command: sh -c 'wait-for -t 30 db:5432 -- python bot/main.py'
 
   backend:
     build: ./backend
@@ -40,18 +40,15 @@ services:
       #TODO: duplicate
       - ${DOCKER_PROJECT_PATH:-.}/backend:/app/backend
       - ${DOCKER_PROJECT_PATH:-.}/db:/app/db
+    # ports:
+    #   - "80:80"
+    command: sh -c 'wait-for -t 30 db:5432 -- uvicorn --host 0.0.0.0 --port 80 backend.main:app'
+
+  frontend:
+    build: ./frontend
     ports:
-      - "80:80"
-    command: sh -c 'wait-for db:5432 -- uvicorn --host 0.0.0.0 --port 80 backend.main:app'
-
-
-#  frontend:
-#    build: ./frontend
-#    volumes:
-#      - ${DOCKER_PROJECT_PATH:-.}/frontend:/app
-#    ports:
-#      - "80:80"
-#    command: npm start
+      - "1027:8000"
+    command: sh -c 'wait-for -t 40 backend:80 -- nginx -g "daemon off;"'
   # pgadmin:
   #   image: dpage/pgadmin4
   #   restart: always
