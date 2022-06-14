@@ -47,7 +47,7 @@ services:
   frontend:
     build: ./frontend
     ports:
-      - "1027:8000"
+      - "1028:8000"
     command: sh -c 'wait-for -t 40 backend:80 -- nginx -g "daemon off;"'
   # pgadmin:
   #   image: dpage/pgadmin4
