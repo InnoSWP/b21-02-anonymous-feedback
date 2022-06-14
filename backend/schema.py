@@ -1,17 +1,34 @@
 import asyncio
-import typing
 import datetime
+from typing import Any, Union, Awaitable, AsyncGenerator, List
 
 import strawberry
 import asyncpg_listen
+from strawberry.permission import BasePermission
+from strawberry.types import Info
+from starlette.requests import Request
+from starlette.websockets import WebSocket
 
 from db import models
-from backend.config import DB_URL
+from backend.config import POSTGRES_URI
+
+
+class CanViewSession(BasePermission):
+    message = "User has no permission to see this session"
+
+    async def has_permission(self, source: Any, info: Info, **kwargs) -> \
+            Union[bool, Awaitable[bool]]:
+        request: Union[Request, WebSocket] = info.context["request"]
+        selected_field = next(filter(lambda f: f.name == "session", info.selected_fields), None)
+        if selected_field is not None:
+            session_id = selected_field.arguments["id"]
+            return int(session_id) == int(request.session.get("session_id"))
+        return False
 
 
 @strawberry.type
 class Query:
-    @strawberry.field
+    @strawberry.field(permission_classes=[CanViewSession])
     async def session(self, id: strawberry.ID) -> "Session":
         return Session.from_model(
             await models.Session.get(id=id).prefetch_related("messages"),
@@ -22,14 +39,17 @@ class Query:
 @strawberry.type
 class Mutation:
     @strawberry.mutation
-    async def create_session(self, name: str) -> "Session":
-        return Session.from_model(await models.Session.create(name=name))
+    async def create_session(self, info: Info, name: str) -> "Session":
+        saved_session = await models.Session.create(name=name)
+        request: Union[Request, WebSocket] = info.context["request"]
+        request.session.update({"session_id": saved_session.pk})
+        return Session.from_model(saved_session)
 
 
 @strawberry.type
 class Subscription:
-    @strawberry.subscription
-    async def watch_session(self, id: strawberry.ID) -> typing.AsyncGenerator["Message", None]:
+    @strawberry.subscription(permission_classes=[CanViewSession])
+    async def watch_session(self, id: strawberry.ID) -> AsyncGenerator["Message", None]:
         queue = asyncio.Queue()
 
         async def get_message_id(
@@ -37,7 +57,7 @@ class Subscription:
         ) -> None:
             queue.put_nowait(int(notification.payload))
 
-        listener = asyncpg_listen.NotificationListener(asyncpg_listen.connect_func(DB_URL))
+        listener = asyncpg_listen.NotificationListener(asyncpg_listen.connect_func(POSTGRES_URI))
         asyncio.create_task(
             listener.run({id: get_message_id}, policy=asyncpg_listen.ListenPolicy.LAST,
                          notification_timeout=asyncpg_listen.NO_TIMEOUT))
@@ -54,7 +74,7 @@ class Session:
     id: strawberry.ID
     name: str
     created: "Timestamp"
-    messages: typing.List["Message"]
+    messages: List["Message"]
 
     @classmethod
     def from_model(cls, session: models.Session, are_messages_fetched=False):

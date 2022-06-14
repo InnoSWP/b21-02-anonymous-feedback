@@ -36,6 +36,12 @@ services:
 
   backend:
     build: ./backend
+    environment:
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB
+      - POSTGRES_HOST=db
+      - SECRET_KEY
     volumes:
       #TODO: duplicate
       - ${DOCKER_PROJECT_PATH:-.}/backend:/app/backend
