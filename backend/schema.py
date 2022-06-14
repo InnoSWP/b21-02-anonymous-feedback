@@ -19,7 +19,8 @@ class CanViewSession(BasePermission):
     async def has_permission(self, source: Any, info: Info, **kwargs) -> \
             Union[bool, Awaitable[bool]]:
         request: Union[Request, WebSocket] = info.context["request"]
-        selected_field = next(filter(lambda f: f.name == "session", info.selected_fields), None)
+        selected_field = next(
+            filter(lambda f: f.name in ("session", "watchSession"), info.selected_fields), None)
         if selected_field is not None:
             session_id = selected_field.arguments["id"]
             return str(session_id) == str(request.session.get("session_id"))
