@@ -1,3 +1,5 @@
+@use "../../colors.scss";
+
 .sessionView {
   &_header {
     display: flex;
@@ -20,5 +22,20 @@
     display: flex;
     align-items: center;
     gap: 16px;
+  }
+
+  &_linkCopied {
+    animation-name: fadeIn;
+    animation-duration: 3s;
+    animation-delay: 0.5s;
+    animation-fill-mode: both;
+    color: colors.$main;
+    opacity: 0.75;
+  }
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 0;
   }
 }
