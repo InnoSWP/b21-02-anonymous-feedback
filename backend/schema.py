@@ -22,7 +22,7 @@ class CanViewSession(BasePermission):
         selected_field = next(
             filter(lambda f: f.name in ("session", "watchSession"), info.selected_fields), None)
         if selected_field is not None:
-            session_id = selected_field.arguments["shortId"]
+            session_id = selected_field.arguments["id"]
             return str(session_id) == str(request.session.get("session_id"))
         return False
 
@@ -30,9 +30,9 @@ class CanViewSession(BasePermission):
 @strawberry.type
 class Query:
     @strawberry.field(permission_classes=[CanViewSession])
-    async def session(self, short_id: str) -> "Session":
+    async def session(self, id: strawberry.ID) -> "Session":
         return Session.from_model(
-            await models.Session.get(short_id=short_id).prefetch_related("messages"),
+            await models.Session.get(short_id=id).prefetch_related("messages"),
             True
         )
 
@@ -50,7 +50,7 @@ class Mutation:
 @strawberry.type
 class Subscription:
     @strawberry.subscription(permission_classes=[CanViewSession])
-    async def watch_session(self, short_id: str) -> AsyncGenerator["Message", None]:
+    async def watch_session(self, id: strawberry.ID) -> AsyncGenerator["Message", None]:
         queue = asyncio.Queue()
 
         async def get_message_id(
@@ -60,7 +60,7 @@ class Subscription:
 
         listener = asyncpg_listen.NotificationListener(asyncpg_listen.connect_func(POSTGRES_URI))
         asyncio.create_task(
-            listener.run({short_id: get_message_id}, policy=asyncpg_listen.ListenPolicy.LAST,
+            listener.run({id: get_message_id}, policy=asyncpg_listen.ListenPolicy.LAST,
                          notification_timeout=asyncpg_listen.NO_TIMEOUT))
         while True:
             message_id = await queue.get()
@@ -80,7 +80,7 @@ class Session:
     @classmethod
     def from_model(cls, session: models.Session, are_messages_fetched=False):
         return Session(
-            short_id=session.short_id,
+            id=strawberry.ID(session.short_id),
             name=session.name,
             created=Timestamp(session.created_at),
             messages=(

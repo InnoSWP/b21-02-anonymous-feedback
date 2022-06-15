@@ -36,7 +36,7 @@ dp = Dispatcher(bot, storage)
 runner = Executor(dp)
 setup(runner)
 
-states: typing.Dict[int, int] = {}
+states: typing.Dict[int, typing.Tuple[int, str]] = {}
 
 
 class SessionState(StatesGroup):
@@ -60,9 +60,9 @@ async def send_welcome(message: types.Message):
         )
         return
 
-    session_id = int(args[0])
+    session_id = args[0]
 
-    session = await Session.get_or_none(pk=session_id)
+    session = await Session.get_or_none(short_id=session_id)
 
     if session is None:
         await message.reply(
@@ -78,19 +78,18 @@ async def send_welcome(message: types.Message):
         )
         # await SessionState.in_session.set()
         # await state.update_data(session_id=session_id)
-        states[message.from_user.id] = session_id
+        states[message.from_user.id] = (session.pk, session_id)
 
 
 @dp.message_handler()
 async def handle_message(message: types.Message):
     # session_id = await state.get_data("session_id")
-    session_id = states.get(message.from_user.id)
-    session = await Session.get_or_none(short_id=session_id)
-    if session:
-        saved_message = await Message.create(message=message.text, session_id=session.pk)
+    session_id, short_id = states.get(message.from_user.id, (None, None))
+    if session_id:
+        saved_message = await Message.create(message=message.text, session_id=session_id)
         conn = await asyncpg.connect(config.POSTGRES_URI)
         await conn.execute(f'''
-            NOTIFY "{session_id}", '{saved_message.pk}';
+            NOTIFY "{short_id}", '{saved_message.pk}';
         ''')
         await conn.close()
         await message.answer("Feedback sent!\n\n"

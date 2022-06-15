@@ -1,5 +1,5 @@
 type Query {
-  session(shortId: String!): Session!
+  session(id: ID!): Session!
 }
 
 type Mutation {
@@ -7,13 +7,13 @@ type Mutation {
 }
 
 type Subscription {
-  watchSession(shortId: String!): Message!
+  watchSession(id: ID!): Message!
 }
 
 # Sessions
 
 type Session {
-  shortId: String!
+  id: ID!
   name: String!
   created: Timestamp!
   messages: [Message!]!
