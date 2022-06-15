@@ -31,7 +31,6 @@ const SessionView = () => {
             </p>
           )}
           <Button onClick={copyJoinLink}>Copy join link</Button>
-          <Button color="red">Close the session</Button>
         </div>
       </header>
       <main className="sessionView_content">
