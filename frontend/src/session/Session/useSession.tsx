@@ -1,6 +1,7 @@
 import { gql, useQuery, useSubscription } from "@apollo/client";
 import { useCallback, useMemo, useState } from "react";
 import { Session as RawSession, Message as RawMessage } from "../../types";
+import notify from "./notify";
 
 const SESSION_QUERY = gql`
   query ($id: ID!) {
@@ -101,6 +102,10 @@ const useWatchSession = (id: string): Session | null => {
       const message = processMessage(data!.message);
       setRecentMessages(new Set([...recentMessages, message]));
       setMessages([...messages, message]);
+
+      if (sessionInfo !== null) {
+        notify(sessionInfo, message);
+      }
     },
   });
 

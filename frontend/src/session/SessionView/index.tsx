@@ -6,8 +6,10 @@ import { useSession } from "../Session";
 import NoMessages from "./NoMessages";
 import { Messages } from "./Messages";
 import { useCallback, useState } from "react";
+import useNotificationPermission from "./useNotificationPermission";
 
 const SessionView = () => {
+  const notificationPermission = useNotificationPermission();
   const session = useSession();
 
   const [hasCopiedLink, setHasCopiedLink] = useState(false);
@@ -31,6 +33,11 @@ const SessionView = () => {
             </p>
           )}
           <Button onClick={copyJoinLink}>Copy join link</Button>
+          {notificationPermission.permission === `default` && (
+            <Button onClick={notificationPermission.request} color="iu">
+              Subscribe to notifications
+            </Button>
+          )}
         </div>
       </header>
       <main className="sessionView_content">
