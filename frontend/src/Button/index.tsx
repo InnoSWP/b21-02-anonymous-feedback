@@ -12,6 +12,7 @@ interface PropsBase {
 interface ButtonProps extends PropsBase {
   isDisabled?: boolean;
   type?: `button` | `submit`;
+  onClick?(): void;
 }
 
 interface LinkProps extends PropsBase {
@@ -32,9 +33,14 @@ const Button = (props: Props) => {
     );
   }
 
-  const { type, isDisabled = false } = props;
+  const { type, isDisabled = false, onClick } = props;
   return (
-    <button type={type} className={className} disabled={isDisabled}>
+    <button
+      type={type}
+      className={className}
+      disabled={isDisabled}
+      onClick={onClick}
+    >
       {children}
     </button>
   );
