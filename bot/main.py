@@ -45,7 +45,7 @@ class SessionState(StatesGroup):
 
 
 @dp.message_handler(commands=['start', 'help'])
-async def send_welcome(message: types.Message, state: FSMContext):
+async def send_welcome(message: types.Message):
     """
     This handler will be called when user sends `/start` or `/help` command
     """
@@ -85,10 +85,10 @@ async def send_welcome(message: types.Message, state: FSMContext):
 async def handle_message(message: types.Message):
     # session_id = await state.get_data("session_id")
     session_id = states.get(message.from_user.id)
-    if session_id:
-        # session_id = await state.get_data("session_id")
-        saved_message = await Message.create(message=message.text, session_id=session_id)
-        conn = await asyncpg.connect("postgres://postgres:password@db:5432/")
+    session = await Session.get_or_none(short_id=session_id)
+    if session:
+        saved_message = await Message.create(message=message.text, session_id=session.pk)
+        conn = await asyncpg.connect(config.POSTGRES_URI)
         await conn.execute(f'''
             NOTIFY "{session_id}", '{saved_message.pk}';
         ''')
