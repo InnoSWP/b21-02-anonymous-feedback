@@ -6,12 +6,17 @@
   gap: 16px;
 
   &_text {
+    max-width: 640px;
+    padding: 16px;
+    margin: 0;
+
     background-color: white;
     border-radius: 12px 12px 12px 0;
-    padding: 16px;
     box-shadow: 0 2px 4px rgb(50 107 193 / 0.1),
       0 4px 8px rgb(50 107 193 / 0.05);
-    margin: 0;
+
+    word-wrap: break-word;
+    white-space: pre-wrap;
 
     &.-recent {
       animation-name: recentMessage;
@@ -26,6 +31,7 @@
     color: colors.$main;
     opacity: 0.5;
     margin: 0;
+    cursor: default;
   }
 }
 
