@@ -34,7 +34,7 @@ const SessionView = () => {
           )}
           <Button onClick={copyJoinLink}>Copy join link</Button>
           {notificationPermission.permission === `default` && (
-            <Button onClick={notificationPermission.request}>
+            <Button onClick={notificationPermission.request} color="iu">
               Subscribe to notifications
             </Button>
           )}
