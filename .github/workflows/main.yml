@@ -32,8 +32,8 @@ jobs:
             echo POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} > .env
             echo BOT_API_TOKEN=${{ secrets.BOT_API_TOKEN }} >> .env
             echo SECRET_KEY=${{ secrets.COOKIE_SECRET_KEY }} >> .env
-            docker compose build
-            docker compose restart
+            docker compose down
+            docker compose up -d --build
 
 
 
