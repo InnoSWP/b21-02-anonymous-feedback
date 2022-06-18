@@ -1,5 +1,5 @@
 /// <reference types="react-scripts" />
 
-declare module "*.ogg" {
+declare module "*.wav" {
   export default string;
 }

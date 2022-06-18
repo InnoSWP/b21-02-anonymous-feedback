@@ -1,6 +1,6 @@
 import { SessionInfo, Message } from "./useSession";
 
-import notificationSound from "./notification.ogg";
+import notificationSound from "./notification.wav";
 
 const notify = (session: SessionInfo, message: Message) => {
   if (Notification.permission !== `granted`) {
