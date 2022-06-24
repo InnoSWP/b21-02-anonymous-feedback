@@ -7,6 +7,7 @@ import {
   useImperativeHandle,
   useRef,
   ForwardedRef,
+  useState,
 } from "react";
 import classNames from "classnames";
 
@@ -20,10 +21,17 @@ interface Props {
 
 export interface Ref {
   focus(): void;
+  highlightAndFocus(): void;
 }
 
 const TextInput = (
-  { value, onChange, placeholder, className, autoFocus }: Props,
+  {
+    value,
+    onChange,
+    placeholder,
+    className: additionalClasssName,
+    autoFocus,
+  }: Props,
   ref: ForwardedRef<Ref>
 ) => {
   const handleChange = useCallback(
@@ -33,19 +41,31 @@ const TextInput = (
   );
   const inputRef = useRef<HTMLInputElement>(null);
 
+  const [isShaking, setIsShaking] = useState(false);
+  const onShakeEnd = useCallback(() => setIsShaking(false), []);
+
   useImperativeHandle<Ref, Ref>(ref, () => ({
     focus: () => inputRef.current?.focus(),
+    highlightAndFocus() {
+      setIsShaking(true);
+      this.focus();
+    },
   }));
+
+  const className = classNames(`textInput`, additionalClasssName, {
+    "-shake": isShaking,
+  });
 
   return (
     <input
       ref={inputRef}
       type="text"
-      className={classNames("textInput", className)}
+      className={className}
       value={value}
       onChange={handleChange}
       placeholder={placeholder}
       autoFocus={autoFocus}
+      onAnimationEnd={onShakeEnd}
     />
   );
 };

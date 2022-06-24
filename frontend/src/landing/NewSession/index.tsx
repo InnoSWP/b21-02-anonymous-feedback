@@ -20,7 +20,7 @@ const NewSession = () => {
     async (event: FormEvent) => {
       event.preventDefault();
       if (name === ``) {
-        nameRef.current?.focus();
+        nameRef.current?.highlightAndFocus();
         return;
       }
 
