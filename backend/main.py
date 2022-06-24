@@ -19,6 +19,6 @@ def init_app():
 graphql_app = GraphQL(schema)
 
 app = init_app()
-register_tortoise(app, db_url=POSTGRES_URI,
-                  modules={"models": ["db.models"]},
-                  generate_schemas=True)
+register_tortoise(
+    app, db_url=POSTGRES_URI, modules={"models": ["db.models"]}, generate_schemas=True
+)
