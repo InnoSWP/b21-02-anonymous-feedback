@@ -11,8 +11,9 @@ def init_app():
     new_app = Starlette()
     new_app.add_route(GRAPHQL_ENDPOINT, graphql_app)
     new_app.add_websocket_route(GRAPHQL_ENDPOINT, graphql_app)
-    new_app.add_middleware(SessionMiddleware, secret_key=SECRET_KEY,
-                           cookie_name="sessionId")
+    new_app.add_middleware(
+        SessionMiddleware, secret_key=SECRET_KEY, cookie_name="sessionId"
+    )
     return new_app
 
 

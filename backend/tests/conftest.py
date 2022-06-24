@@ -9,8 +9,11 @@ from backend.config import POSTGRES_URI
 @pytest.fixture(scope="function")
 def client() -> TestClient:
     app = init_app()
-    register_tortoise(app, db_url=POSTGRES_URI,
-                      modules={"models": ["db.models"]},
-                      generate_schemas=True)
+    register_tortoise(
+        app,
+        db_url=POSTGRES_URI,
+        modules={"models": ["db.models"]},
+        generate_schemas=True,
+    )
     with TestClient(app) as test_client:
         yield test_client
