@@ -6,13 +6,19 @@ from starlette_session import SessionMiddleware
 from backend.schema import schema
 from backend.config import POSTGRES_URI, SECRET_KEY
 
+
+def init_app():
+    new_app = Starlette()
+    new_app.add_route("/graphql", graphql_app)
+    new_app.add_websocket_route("/graphql", graphql_app)
+    new_app.add_middleware(SessionMiddleware, secret_key=SECRET_KEY,
+                           cookie_name="sessionId")
+    return new_app
+
+
 graphql_app = GraphQL(schema)
 
-app = Starlette()
-app.add_route("/graphql", graphql_app)
-app.add_websocket_route("/graphql", graphql_app)
-app.add_middleware(SessionMiddleware, secret_key=SECRET_KEY,
-                   cookie_name="sessionId")
+app = init_app()
 register_tortoise(app, db_url=POSTGRES_URI,
                   modules={"models": ["db.models"]},
                   generate_schemas=True)
