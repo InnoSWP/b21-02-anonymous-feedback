@@ -18,6 +18,14 @@ services:
     #   placement:
     #     constraints:
     #       - node.labels.${STACK_NAME?Variable not set}.app-db-data == true
+  db-test:
+    image: postgres
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB
 
   bot:
     build: ./bot
@@ -66,5 +74,20 @@ services:
   #       # (sudo chown -R 5050:5050 <this path>)
   #       - ${DOCKER_PROJECT_PATH:-.}/data/pgadmin:/var/lib/pgadmin
 
+  backend-tests:
+    build: ./backend
+    environment:
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB
+      - POSTGRES_HOST=db-test
+      - SECRET_KEY
+      - PYTHONPATH=/app
+    profiles:
+      - test
+    volumes:
+      - ${DOCKER_PROJECT_PATH:-.}/backend:/app/backend
+      - ${DOCKER_PROJECT_PATH:-.}/db:/app/db
+    command: sh -c 'wait-for -t 30 db:5432 -- pytest /app/backend/tests'
 # volumes:
 #   app-db-data:

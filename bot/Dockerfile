@@ -11,7 +11,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 FROM python:3.10-alpine AS development
 COPY --from=builder /opt/venv /opt/venv
 
-RUN wget -P  --progress=dot:giga \
+RUN wget -P \
     /usr/bin https://raw.githubusercontent.com/eficode/wait-for/v2.2.3/wait-for && \
     chmod +x /usr/bin/wait-for
 
