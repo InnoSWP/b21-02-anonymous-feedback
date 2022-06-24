@@ -1,22 +1,29 @@
 import "./style.scss";
 
-import { FormEvent, useCallback, useState } from "react";
+import { FormEvent, useCallback, useRef, useState } from "react";
 import Button from "../../Button";
 import IconButton from "../../IconButton";
 import { ReactComponent as BackIcon } from "../../icons/backArrow.svg";
 import { useNavigate } from "react-router";
-import TextInput from "../../TextInput";
+import TextInput, { Ref as TextInputRef } from "../../TextInput";
 import useCreateSession from "./useCreateSession";
 
 const NewSession = () => {
   const navigate = useNavigate();
   const goBack = useCallback(() => navigate(-1), [navigate]);
 
+  const nameRef = useRef<TextInputRef>(null);
   const [name, setName] = useState(``);
+
   const createSession = useCreateSession();
   const handleSubmit = useCallback(
     async (event: FormEvent) => {
       event.preventDefault();
+      if (name === ``) {
+        nameRef.current?.focus();
+        return;
+      }
+
       const id = await createSession(name);
       navigate(`/session/${id}`);
     },
@@ -37,10 +44,12 @@ const NewSession = () => {
       </p>
       <form className="newSession_form" onSubmit={handleSubmit}>
         <TextInput
+          ref={nameRef}
           className="newSession_name"
           value={name}
           onChange={setName}
           placeholder="DSA Lab"
+          autoFocus={true}
         />
         <Button type="submit">Create the session</Button>
       </form>
