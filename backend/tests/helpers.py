@@ -9,7 +9,7 @@ import queries
 @dataclass
 class GraphQLResponse:
     data: typing.Dict[str, typing.Any]
-    errors: typing.List[typing.Dict[str, typing.Any]]
+    errors: typing.Optional[typing.List[typing.Dict[str, typing.Any]]] = None
 
 
 def execute(client: starlette.testclient.TestClient, query: str,
