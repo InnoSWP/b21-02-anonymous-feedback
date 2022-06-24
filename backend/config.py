@@ -9,3 +9,5 @@ POSTGRES_URI = f"postgres://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_HOST}:
 
 # Secret key for sessions
 SECRET_KEY = os.getenv("SECRET_KEY", default="")
+
+GRAPHQL_ENDPOINT = '/graphql'
