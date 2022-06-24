@@ -9,7 +9,7 @@ from backend.config import POSTGRES_URI
 
 
 @pytest.fixture(scope="function")
-def client() -> typing.Generator[TestClient]:
+def client() -> typing.Generator[TestClient, None, None]:
     app = init_app()
     register_tortoise(
         app,
