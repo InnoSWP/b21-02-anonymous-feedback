@@ -25,7 +25,7 @@ on:
 # Set the Job #
 ###############
 jobs:
-  build:
+  super-linter:
     # Name the Job
     name: Lint Code Base
     # Set the agent to run on
@@ -41,15 +41,35 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
         with:
-          # Full git history is needed to get a proper list of changed files within `super-linter`
+          # Full git history is needed to get a proper
+          # list of changed files within `super-linter``
           fetch-depth: 0
 
       ################################
       # Run Linter against code base #
       ################################
-      - name: Lint Code Base
+      - name: Lint with Super Linter
         uses: github/super-linter@v4
         env:
           VALIDATE_ALL_CODEBASE: false
           DEFAULT_BRANCH: master
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  eslint:
+    name: Lint with ESLint
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install modules
+        run: cd frontend && npm ci
+      - name: Run ESLint
+        run: eslint . --ext .js,.jsx,.ts,.tsx
+  
+  black:
+    name: runner / black formatter
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: rickstaa/action-black@v1
+        # with:
+        #   black_args: ". --check"
