@@ -88,6 +88,6 @@ services:
     volumes:
       - ${DOCKER_PROJECT_PATH:-.}/backend:/app/backend
       - ${DOCKER_PROJECT_PATH:-.}/db:/app/db
-    command: sh -c 'wait-for -t 30 db:5432 -- pytest --cov=backend /app/backend/tests'
+    command: sh -c 'wait-for -t 30 db-test:5432 -- pytest --cov=backend /app/backend/tests'
 # volumes:
 #   app-db-data:
