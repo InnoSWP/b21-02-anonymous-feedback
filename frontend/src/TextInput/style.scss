@@ -35,4 +35,26 @@
       color: rgb(50 107 193 / 0.25);
     }
   }
+
+  &.-shake {
+    animation-name: shake;
+    animation-duration: 200ms;
+    animation-fill-mode: both;
+  }
+}
+
+@keyframes shake {
+  0%,
+  50%,
+  100% {
+    transform: translateX(0);
+  }
+
+  25% {
+    transform: translateX(-32px);
+  }
+
+  75% {
+    transform: translateX(16px);
+  }
 }
