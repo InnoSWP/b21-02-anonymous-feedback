@@ -46,8 +46,8 @@ async def create_message(message_text: str, session_id: int) -> int:
     result: typing.List[asyncpg.Record]
     # Tortoise does not want to insert a new message for some reason, so I did this:
     result = await conn.fetch(
-        f"""
-        INSERT INTO "message" ("message","timestamp","session_id") VALUES 
+        """
+        INSERT INTO "message" ("message","timestamp","session_id") VALUES
         ($1,CURRENT_TIMESTAMP,$2) RETURNING "id"
     """,
         message_text,

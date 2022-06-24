@@ -39,3 +39,15 @@ async def test_watch_session(client):
         assert int(response.data["message"]["id"]) == message_id
         assert response.data["message"]["text"] == message_text
         websocket.close()
+
+
+async def test_session_visibility(client):
+    session_name = "Test session"
+    session_id = create_session(client, session_name).data["session"]["id"]
+    response = get_session(client, session_id)
+    assert response.errors is None
+    assert response.data["session"]["name"] == session_name
+    client.cookies.clear()
+    response = get_session(client, session_id)
+    assert response.data is None
+    assert response.errors[0]["message"] == "User has no permission to see this session"
