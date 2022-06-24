@@ -8,9 +8,16 @@ interface Props {
   onChange(newValue: string): void;
   placeholder?: string;
   className?: string;
+  autoFocus?: boolean;
 }
 
-const TextInput = ({ value, onChange, placeholder, className }: Props) => {
+const TextInput = ({
+  value,
+  onChange,
+  placeholder,
+  className,
+  autoFocus,
+}: Props) => {
   const handleChange = useCallback(
     (event: ChangeEvent<HTMLInputElement>) =>
       onChange(event.currentTarget.value),
@@ -24,6 +31,7 @@ const TextInput = ({ value, onChange, placeholder, className }: Props) => {
       value={value}
       onChange={handleChange}
       placeholder={placeholder}
+      autoFocus={autoFocus}
     />
   );
 };
