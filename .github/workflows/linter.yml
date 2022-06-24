@@ -71,7 +71,7 @@ jobs:
       - name: Install modules
         run: cd frontend && npm install
       - name: Run ESLint
-        run: npx eslint "frontend/src/**.{tsx,ts}"
+        run: cd frontend && npx eslint "src/**.{tsx,ts}"
   
   black:
     name: runner / black formatter
