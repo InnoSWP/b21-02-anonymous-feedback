@@ -1,5 +1,6 @@
 FROM python:3.10-alpine AS builder
 
+# hadolint ignore=DL3018
 RUN apk update && \
     apk upgrade && \
     apk add --no-cache gcc make musl-dev && \
@@ -9,7 +10,6 @@ RUN apk update && \
 ENV PATH="/opt/venv/bin:$PATH"
 
 WORKDIR /app
-RUN pip install --no-cache-dir -U setuptools pip
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 

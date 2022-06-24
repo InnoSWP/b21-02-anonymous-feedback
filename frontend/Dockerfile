@@ -1,4 +1,4 @@
-FROM node AS builder
+FROM node:alpine AS builder
 
 WORKDIR /opt/dependencies
 COPY package.json package-lock.json ./
@@ -25,4 +25,4 @@ COPY nginx.conf /etc/nginx/conf.d/default.conf
 RUN wget -P --progress=dot:giga /usr/bin https://raw.githubusercontent.com/eficode/wait-for/v2.2.3/wait-for
 RUN chmod +x /usr/bin/wait-for
 
-CMD nginx -g "daemon off;"
+CMD ["nginx", "-g", "daemon off;"]
