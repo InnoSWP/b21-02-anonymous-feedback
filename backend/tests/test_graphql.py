@@ -9,25 +9,25 @@ from helpers import (
 )
 from backend.config import GRAPHQL_ENDPOINT
 
+SESSION_NAME = "Test session"
+
 
 async def test_create_session(client):
-    session_name = "Test session"
-    response = create_session(client, session_name)
+    response = create_session(client, SESSION_NAME)
     assert response.errors is None
-    assert response.data["session"]["name"] == session_name
+    assert response.data["session"]["name"] == SESSION_NAME
 
 
 async def test_get_session(client):
-    session_name = "Test session"
-    session_id = create_session(client, session_name).data["session"]["id"]
+    session_id = create_session(client, SESSION_NAME).data["session"]["id"]
     response = get_session(client, session_id)
     assert response.errors is None
-    assert response.data["session"]["name"] == session_name
+    assert response.data["session"]["name"] == SESSION_NAME
 
 
 async def test_watch_session(client):
     websocket: WebSocketTestSession
-    session_id = int(create_session(client, "Test").data["session"]["id"])
+    session_id = int(create_session(client, SESSION_NAME).data["session"]["id"])
     with client.websocket_connect(
         GRAPHQL_ENDPOINT, subprotocols=["graphql-ws"]
     ) as websocket:
@@ -42,11 +42,10 @@ async def test_watch_session(client):
 
 
 async def test_session_visibility(client):
-    session_name = "Test session"
-    session_id = create_session(client, session_name).data["session"]["id"]
+    session_id = create_session(client, SESSION_NAME).data["session"]["id"]
     response = get_session(client, session_id)
     assert response.errors is None
-    assert response.data["session"]["name"] == session_name
+    assert response.data["session"]["name"] == SESSION_NAME
     client.cookies.clear()
     response = get_session(client, session_id)
     assert response.data is None
