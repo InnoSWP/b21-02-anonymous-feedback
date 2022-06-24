@@ -6,3 +6,4 @@ asyncpg_listen~=0.0.5
 starlette-session~=0.4.2
 pytest-aio~=1.4.1
 requests~=2.25.1
+pytest-cov~=3.0.0
