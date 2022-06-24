@@ -52,6 +52,12 @@ jobs:
         uses: github/super-linter@v4
         env:
           VALIDATE_ALL_CODEBASE: true
+           # Since does not have support of scss syntax,
+           # we set VALIDATE_CSS to false
+          VALIDATE_CSS: false
+          VALIDATE_PYTHON_ISORT: false
+          # Since we use eslint, disable this. 
+          VALIDATE_TYPESCRIPT_STANDARD: false
           DEFAULT_BRANCH: master
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   
@@ -64,7 +70,7 @@ jobs:
       - name: Install modules
         run: cd frontend && npm install
       - name: Run ESLint
-        run: npx eslint src/**
+        run: npx eslint frontend/src/**
   
   black:
     name: runner / black formatter
@@ -72,5 +78,5 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: rickstaa/action-black@v1
-        # with:
-        #   black_args: ". --check"
+        with:
+          black_args: ". --check"

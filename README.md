@@ -8,12 +8,12 @@ This is a repository for the Anonymous Feedback project.
 
 2. Create `data/pgdata/` in project root directory.
 
-2. To run the project, ensure you have docker installed and simply execute the command.
-```bash 
+3. To run the project, ensure you have docker installed and simply execute the command.
+```bash
 docker compose up
 ```
 
-3. To run with rebuild, execute this.
-```bash 
+4. To run with rebuild, execute this.
+```bash
 docker compose up --build
 ```
