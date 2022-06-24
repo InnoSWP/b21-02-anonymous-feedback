@@ -16,11 +16,16 @@ from backend.config import POSTGRES_URI
 class CanViewSession(BasePermission):
     message = "User has no permission to see this session"
 
-    async def has_permission(self, source: Any, info: Info, **kwargs) -> \
-            Union[bool, Awaitable[bool]]:
+    async def has_permission(
+        self, source: Any, info: Info, **kwargs
+    ) -> Union[bool, Awaitable[bool]]:
         request: Union[Request, WebSocket] = info.context["request"]
         selected_field = next(
-            filter(lambda f: f.name in ("session", "watchSession"), info.selected_fields), None)
+            filter(
+                lambda f: f.name in ("session", "watchSession"), info.selected_fields
+            ),
+            None,
+        )
         if selected_field is not None:
             session_id = selected_field.arguments["id"]
             return str(session_id) == str(request.session.get("session_id"))
@@ -32,8 +37,7 @@ class Query:
     @strawberry.field(permission_classes=[CanViewSession])
     async def session(self, id: strawberry.ID) -> "Session":
         return Session.from_model(
-            await models.Session.get(id=id).prefetch_related("messages"),
-            True
+            await models.Session.get(id=id).prefetch_related("messages"), True
         )
 
 
@@ -53,15 +57,19 @@ class Subscription:
     async def watch_session(self, id: strawberry.ID) -> AsyncGenerator["Message", None]:
         queue = asyncio.Queue()
 
-        async def get_message_id(
-                notification: asyncpg_listen.Notification
-        ) -> None:
+        async def get_message_id(notification: asyncpg_listen.Notification) -> None:
             queue.put_nowait(int(notification.payload))
 
-        listener = asyncpg_listen.NotificationListener(asyncpg_listen.connect_func(POSTGRES_URI))
+        listener = asyncpg_listen.NotificationListener(
+            asyncpg_listen.connect_func(POSTGRES_URI)
+        )
         asyncio.create_task(
-            listener.run({id: get_message_id}, policy=asyncpg_listen.ListenPolicy.LAST,
-                         notification_timeout=asyncpg_listen.NO_TIMEOUT))
+            listener.run(
+                {id: get_message_id},
+                policy=asyncpg_listen.ListenPolicy.LAST,
+                notification_timeout=asyncpg_listen.NO_TIMEOUT,
+            )
+        )
         while True:
             message_id = await queue.get()
             if message_id is not None:
@@ -85,8 +93,9 @@ class Session:
             created=Timestamp(session.created_at),
             messages=(
                 [Message.from_model(message) for message in session.messages]
-                if are_messages_fetched else []
-            )
+                if are_messages_fetched
+                else []
+            ),
         )
 
 
@@ -98,8 +107,11 @@ class Message:
 
     @classmethod
     def from_model(cls, message: models.Message):
-        return Message(id=strawberry.ID(message.pk), text=message.message,
-                       timestamp=Timestamp(message.timestamp))
+        return Message(
+            id=strawberry.ID(message.pk),
+            text=message.message,
+            timestamp=Timestamp(message.timestamp),
+        )
 
 
 # Utility types

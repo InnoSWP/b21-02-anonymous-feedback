@@ -44,7 +44,7 @@ class SessionState(StatesGroup):
     in_session = State()
 
 
-@dp.message_handler(commands=['start', 'help'])
+@dp.message_handler(commands=["start", "help"])
 async def send_welcome(message: types.Message, state: FSMContext):
     """
     This handler will be called when user sends `/start` or `/help` command
@@ -56,7 +56,7 @@ async def send_welcome(message: types.Message, state: FSMContext):
     if not args or len(args) > 1:
         await message.reply(
             "Join a feedback session by sending me `/start <session ID>`.",
-            parse_mode=types.ParseMode.MARKDOWN
+            parse_mode=types.ParseMode.MARKDOWN,
         )
         return
 
@@ -67,14 +67,16 @@ async def send_welcome(message: types.Message, state: FSMContext):
     if session is None:
         await message.reply(
             f"Cannot find session with id {session_id}!",
-            parse_mode=types.ParseMode.MARKDOWN
+            parse_mode=types.ParseMode.MARKDOWN,
         )
     else:
         await message.reply(
-            (f"You joined \"*{session.name}*\" feedback session!\n\n"
-             "Send me a message and I will deliver it to the TA anonymously. "
-             "Consider scheduling messages to stay unnoticed."),
-            parse_mode=types.ParseMode.MARKDOWN
+            (
+                f'You joined "*{session.name}*" feedback session!\n\n'
+                "Send me a message and I will deliver it to the TA anonymously. "
+                "Consider scheduling messages to stay unnoticed."
+            ),
+            parse_mode=types.ParseMode.MARKDOWN,
         )
         # await SessionState.in_session.set()
         # await state.update_data(session_id=session_id)
@@ -87,15 +89,21 @@ async def handle_message(message: types.Message):
     session_id = states.get(message.from_user.id)
     if session_id:
         # session_id = await state.get_data("session_id")
-        saved_message = await Message.create(message=message.text, session_id=session_id)
+        saved_message = await Message.create(
+            message=message.text, session_id=session_id
+        )
         conn = await asyncpg.connect("postgres://postgres:password@db:5432/")
-        await conn.execute(f'''
+        await conn.execute(
+            f"""
             NOTIFY "{session_id}", '{saved_message.pk}';
-        ''')
+        """
+        )
         await conn.close()
-        await message.answer("Feedback sent!\n\n"
-                             "You can send more messages to the TA by simply texting it to me. "
-                             "Consider scheduling messages to stay unnoticed.")
+        await message.answer(
+            "Feedback sent!\n\n"
+            "You can send more messages to the TA by simply texting it to me. "
+            "Consider scheduling messages to stay unnoticed."
+        )
 
 
 async def create_data():
@@ -103,6 +111,6 @@ async def create_data():
     pass
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # run_async(create_data())
     runner.start_polling(dp)

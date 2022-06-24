@@ -3,6 +3,7 @@ from tortoise.utils import get_schema_sql
 
 from models import Session
 
+
 async def main():
     await Tortoise.init(
         db_url="postgres://postgres:password@db:5432/",

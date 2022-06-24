@@ -61,9 +61,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Install modules
-        run: cd frontend && npm ci
+        run: cd frontend && npm install
       - name: Run ESLint
-        run: eslint . --ext .js,.jsx,.ts,.tsx
+        run: npx eslint src/**
   
   black:
     name: runner / black formatter
