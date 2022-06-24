@@ -11,8 +11,7 @@ graphql_app = GraphQL(schema)
 app = Starlette()
 app.add_route("/graphql", graphql_app)
 app.add_websocket_route("/graphql", graphql_app)
-app.add_middleware(SessionMiddleware, secret_key=SECRET_KEY,
-                   cookie_name="sessionId")
-register_tortoise(app, db_url=POSTGRES_URI,
-                  modules={"models": ["db.models"]},
-                  generate_schemas=True)
+app.add_middleware(SessionMiddleware, secret_key=SECRET_KEY, cookie_name="sessionId")
+register_tortoise(
+    app, db_url=POSTGRES_URI, modules={"models": ["db.models"]}, generate_schemas=True
+)
