@@ -20,8 +20,6 @@ services:
     #       - node.labels.${STACK_NAME?Variable not set}.app-db-data == true
   db-test:
     image: postgres
-    profiles:
-      - test
     env_file:
       - .env
     environment:
