@@ -22,7 +22,7 @@ RUN rm -rf ./*
 COPY --from=builder /opt/dependencies/build ./
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-RUN wget -P --progress=dot:giga /usr/bin https://raw.githubusercontent.com/eficode/wait-for/v2.2.3/wait-for
+RUN wget -P /usr/bin https://raw.githubusercontent.com/eficode/wait-for/v2.2.3/wait-for
 RUN chmod +x /usr/bin/wait-for
 
 CMD ["nginx", "-g", "daemon off;"]

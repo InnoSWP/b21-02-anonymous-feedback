@@ -1,0 +1,28 @@
+name: Test
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    name: Run test suite
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Create .env
+        run: |
+          echo POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} > .env
+          echo BOT_API_TOKEN=${{ secrets.BOT_API_TOKEN }} >> .env
+          echo SECRET_KEY=${{ secrets.COOKIE_SECRET_KEY }} >> .env
+
+      - name: Build docker images
+        run: docker compose build db-test backend-tests
+      - name: Run tests
+        run: |
+          docker compose up -d db-test
+          docker compose up backend-tests
+          docker compose down
+
+#       - name: Upload coverage to Codecov
+#         uses: codecov/codecov-action@v3
