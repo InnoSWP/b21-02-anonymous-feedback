@@ -59,6 +59,7 @@ jobs:
           VALIDATE_PYTHON_MYPY: false
           # Since we use eslint, disable this. 
           VALIDATE_TYPESCRIPT_STANDARD: false
+          VALIDATE_JSCPD: false
           DEFAULT_BRANCH: master
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   

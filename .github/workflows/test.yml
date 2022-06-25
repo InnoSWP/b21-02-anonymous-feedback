@@ -18,11 +18,14 @@ jobs:
 
       - name: Build docker images
         run: docker compose build db-test backend-tests
-      - name: Run tests
+      - name: Run backend tests
         run: |
           docker compose up -d db-test
           docker compose up backend-tests
           docker compose down
 
-#       - name: Upload coverage to Codecov
-#         uses: codecov/codecov-action@v3
+      - name: Run frontend tests
+        run: |
+          cd frontend
+          npm install
+          npm run test -- --coverage . --collectCoverageFrom="./src/**/*"
