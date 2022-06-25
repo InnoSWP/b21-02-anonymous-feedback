@@ -23,4 +23,5 @@ RUN chmod +x /usr/bin/wait-for
 ENV PATH="/opt/venv/bin:$PATH"
 
 WORKDIR /app
-CMD ["strawberry", "export-schema", "schema:schema"]
+
+COPY .coveragerc .
