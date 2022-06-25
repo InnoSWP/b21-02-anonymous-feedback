@@ -1,7 +1,7 @@
 import { gql, useMutation } from "@apollo/client";
 import { useCallback } from "react";
 
-const MUTATION = gql`
+export const CREATE_SESSION = gql`
   mutation ($name: String!) {
     session: createSession(name: $name) {
       id
@@ -18,7 +18,7 @@ interface Result {
 }
 
 const useCreateSession = () => {
-  const [createSession] = useMutation<Result, Variables>(MUTATION);
+  const [createSession] = useMutation<Result, Variables>(CREATE_SESSION);
 
   return useCallback(
     async (name: string) => {
