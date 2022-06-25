@@ -24,12 +24,9 @@ class CanViewSession(BasePermission):
             filter(
                 lambda f: f.name in ("session", "watchSession"), info.selected_fields
             ),
-            None,
         )
-        if selected_field is not None:
-            session_id = selected_field.arguments["id"]
-            return str(session_id) == str(request.session.get("session_id"))
-        return False
+        session_id = selected_field.arguments["id"]
+        return str(session_id) == str(request.session.get("session_id"))
 
 
 @strawberry.type
