@@ -58,7 +58,7 @@ Before following the steps, ensure that you have Docker installed.
   
 - **Frontend:**
   - TypeScript
-  - React.js
+  - React
   - SCSS
   - Apollo Client
   - React Router
