@@ -32,7 +32,8 @@ dp = Dispatcher(bot)
 runner = Executor(dp)
 setup(runner)
 
-redis_state = Redis(host=config.REDIS_HOST, port=config.REDIS_PORT)ß
+redis_state = Redis(host=config.REDIS_HOST, port=config.REDIS_PORT)
+
 
 @dp.message_handler(commands=["start", "help"])
 async def send_welcome(message: types.Message, state: FSMContext):
@@ -91,6 +92,7 @@ async def handle_message(message: types.Message):
             "You can send more messages to the TA by simply texting it to me. "
             "Consider scheduling messages to stay unnoticed."
         )
+
 
 if __name__ == "__main__":
     runner.start_polling(dp)
