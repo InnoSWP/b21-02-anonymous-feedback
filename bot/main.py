@@ -1,11 +1,13 @@
 import logging
-import typing
+# import typing
 
 from aiogram import Bot, Dispatcher, types
-from aiogram.contrib.fsm_storage.memory import MemoryStorage
-from aiogram.dispatcher.filters.state import StatesGroup, State
+# from aiogram.contrib.fsm_storage.memory import MemoryStorage
+# fr
+# om aiogram.dispatcher.filters.state import StatesGroup, State
 from aiogram.utils.executor import Executor
 from aiogram.dispatcher import FSMContext
+from redis import Redis
 from tortoise import Tortoise
 import asyncpg
 
@@ -29,19 +31,19 @@ def setup(runner: Executor):
 
 logging.basicConfig(level=logging.INFO)
 
-storage = MemoryStorage()
-
 bot = Bot(token=config.API_TOKEN)
-dp = Dispatcher(bot, storage)
+dp = Dispatcher(bot)
 runner = Executor(dp)
 setup(runner)
 
-states: typing.Dict[int, int] = {}
+# states: typing.Dict[int, int] = {}
+
+redis_state = Redis(host=config.REDIS_HOST, port=config.REDIS_PORT)
 
 
-class SessionState(StatesGroup):
-    no_session = State()
-    in_session = State()
+# class SessionState(StatesGroup):
+#     no_session = State()
+#     in_session = State()
 
 
 @dp.message_handler(commands=["start", "help"])
@@ -73,20 +75,23 @@ async def send_welcome(message: types.Message, state: FSMContext):
         await message.reply(
             (
                 f'You joined "*{session.name}*" feedback session!\n\n'
-                "Send me a message and I will deliver it to the TA anonymously. "
+                "Send me a message and I will"
+                "deliver it to the TA anonymously. "
                 "Consider scheduling messages to stay unnoticed."
             ),
             parse_mode=types.ParseMode.MARKDOWN,
         )
         # await SessionState.in_session.set()
         # await state.update_data(session_id=session_id)
-        states[message.from_user.id] = session_id
+        redis_state.set(name=message.from_user.id, value=session_id)
+        # states[message.from_user.id] = session_id
 
 
 @dp.message_handler()
 async def handle_message(message: types.Message):
     # session_id = await state.get_data("session_id")
-    session_id = states.get(message.from_user.id)
+    session_id = redis_state.get(message.from_user.id)
+    # session_id = states.get(message.from_user.id)
     if session_id:
         # session_id = await state.get_data("session_id")
         saved_message = await Message.create(

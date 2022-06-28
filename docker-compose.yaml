@@ -14,10 +14,12 @@ services:
       - POSTGRES_PASSWORD
       - POSTGRES_DB
       - PGDATA=/var/lib/postgresql/data/pgdata
-    # deploy:
-    #   placement:
-    #     constraints:
-    #       - node.labels.${STACK_NAME?Variable not set}.app-db-data == true
+
+  redis:
+    image: redis
+    volumes:
+      - ${DOCKER_PROJECT_PATH:-.}/redis_data:/data
+
   db-test:
     image: postgres
     env_file:
@@ -35,6 +37,8 @@ services:
       - POSTGRES_PASSWORD
       - POSTGRES_DB
       - POSTGRES_HOST=db
+      - REDIS_HOST=redis
+      - REDIS_PORT
     volumes:
       - ${DOCKER_PROJECT_PATH:-.}/bot:/app/bot
       - ${DOCKER_PROJECT_PATH:-.}/db:/app/db
@@ -58,23 +62,9 @@ services:
 
   frontend:
     build: ./frontend
-    profiles:
-      - test
     ports:
       - "1028:8000"
     command: sh -c 'wait-for -t 40 backend:80 -- nginx -g "daemon off;"'
-  # pgadmin:
-  #   image: dpage/pgadmin4
-  #   restart: always
-  #   environment:
-  #       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_USER}
-  #       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
-  #   ports:
-  #       - "5050:80"
-  #   volumes:
-  #       # Don't forget to set owner:group for this dir as 5050:5050
-  #       # (sudo chown -R 5050:5050 <this path>)
-  #       - ${DOCKER_PROJECT_PATH:-.}/data/pgadmin:/var/lib/pgadmin
 
   backend-tests:
     build: ./backend
@@ -91,5 +81,3 @@ services:
       - ${DOCKER_PROJECT_PATH:-.}/backend:/app/backend
       - ${DOCKER_PROJECT_PATH:-.}/db:/app/db
     command: sh -c 'wait-for -t 60 db-test:5432 -- pytest --cov=backend /app/backend/tests'
-# volumes:
-#   app-db-data:
