@@ -21,6 +21,14 @@ mutation ($name: String!) {
   }
 """
 
+CLOSE_SESSION = """
+mutation ($id: ID!) {
+    session: closeSession(id: $id) {
+      id, name
+    }
+  }
+"""
+
 WATCH_SESSION = """
 subscription ($id: ID!) {
     message: watchSession(id: $id) {

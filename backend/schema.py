@@ -20,11 +20,7 @@ class CanViewSession(BasePermission):
         self, source: Any, info: Info, **kwargs
     ) -> Union[bool, Awaitable[bool]]:
         request: Union[Request, WebSocket] = info.context["request"]
-        selected_field = next(
-            filter(
-                lambda f: f.name in ("session", "watchSession"), info.selected_fields
-            ),
-        )
+        selected_field = info.selected_fields[0]
         session_id = selected_field.arguments["id"]
         return str(session_id) == str(request.session.get("session_id"))
 
@@ -46,6 +42,12 @@ class Mutation:
         request: Union[Request, WebSocket] = info.context["request"]
         request.session.update({"session_id": saved_session.pk})
         return Session.from_model(saved_session)
+
+    @strawberry.mutation(permission_classes=[CanViewSession])
+    async def close_session(self, id: strawberry.ID) -> "Session":
+        deleted_session = await models.Session.get(id=id)
+        await deleted_session.delete()
+        return Session.from_model(deleted_session)
 
 
 @strawberry.type
