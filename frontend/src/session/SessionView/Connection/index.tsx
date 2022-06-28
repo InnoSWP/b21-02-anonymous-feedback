@@ -5,14 +5,10 @@ import "./style.scss";
 const Connection = () => {
   const connectionStatus = useConnectionStatus();
 
-  const isAnimating = connectionStatus === `connected`;
   const hasError =
     connectionStatus === `disconnected` || connectionStatus === `error`;
 
-  const className = classNames("connectionAnimation", {
-    "-animating": isAnimating,
-    "-error": hasError,
-  });
+  const className = classNames("connectionAnimation", { "-error": hasError });
 
   return (
     <div className="connection">
