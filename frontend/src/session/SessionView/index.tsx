@@ -1,7 +1,7 @@
 import "./style.scss";
 
 import Button from "../../Button";
-import Connected from "./Connected";
+import Connection from "./Connection";
 import { useSession } from "../Session";
 import NoMessages from "./NoMessages";
 import { Messages } from "./Messages";
@@ -41,7 +41,7 @@ const SessionView = () => {
         </div>
       </header>
       <main className="sessionView_content">
-        <Connected />
+        <Connection />
         {session.messages.length === 0 && <NoMessages />}
         {session.messages.length > 0 && (
           <Messages
