@@ -3,4 +3,5 @@ __pycache__
 .devcontainer
 .env
 data
+redis_data
 .idea
