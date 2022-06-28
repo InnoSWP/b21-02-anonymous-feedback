@@ -15,16 +15,16 @@ class GraphQLResponse:
 
 
 def make_json(
-        query: str, variable_values: typing.Dict[str, typing.Any]
+    query: str, variable_values: typing.Dict[str, typing.Any]
 ) -> typing.Dict[str, typing.Any]:
     return {"query": query, "variables": variable_values}
 
 
 def execute(
-        client: TestClient,
-        query: str,
-        variable_values: typing.Dict[str, typing.Any],
-        endpoint: str = GRAPHQL_ENDPOINT,
+    client: TestClient,
+    query: str,
+    variable_values: typing.Dict[str, typing.Any],
+    endpoint: str = GRAPHQL_ENDPOINT,
 ) -> GraphQLResponse:
     return GraphQLResponse(
         **client.post(endpoint, json=make_json(query, variable_values)).json()
