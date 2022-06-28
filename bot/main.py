@@ -1,10 +1,6 @@
 import logging
-# import typing
 
 from aiogram import Bot, Dispatcher, types
-# from aiogram.contrib.fsm_storage.memory import MemoryStorage
-# fr
-# om aiogram.dispatcher.filters.state import StatesGroup, State
 from aiogram.utils.executor import Executor
 from aiogram.dispatcher import FSMContext
 from redis import Redis
@@ -36,15 +32,7 @@ dp = Dispatcher(bot)
 runner = Executor(dp)
 setup(runner)
 
-# states: typing.Dict[int, int] = {}
-
-redis_state = Redis(host=config.REDIS_HOST, port=config.REDIS_PORT)
-
-
-# class SessionState(StatesGroup):
-#     no_session = State()
-#     in_session = State()
-
+redis_state = Redis(host=config.REDIS_HOST, port=config.REDIS_PORT)ß
 
 @dp.message_handler(commands=["start", "help"])
 async def send_welcome(message: types.Message, state: FSMContext):
@@ -81,19 +69,13 @@ async def send_welcome(message: types.Message, state: FSMContext):
             ),
             parse_mode=types.ParseMode.MARKDOWN,
         )
-        # await SessionState.in_session.set()
-        # await state.update_data(session_id=session_id)
         redis_state.set(name=message.from_user.id, value=session_id)
-        # states[message.from_user.id] = session_id
 
 
 @dp.message_handler()
 async def handle_message(message: types.Message):
-    # session_id = await state.get_data("session_id")
     session_id = redis_state.get(message.from_user.id)
-    # session_id = states.get(message.from_user.id)
     if session_id:
-        # session_id = await state.get_data("session_id")
         saved_message = await Message.create(
             message=message.text, session_id=session_id
         )
@@ -110,12 +92,5 @@ async def handle_message(message: types.Message):
             "Consider scheduling messages to stay unnoticed."
         )
 
-
-async def create_data():
-    # await Session.create(id="TCS123", name="TCS Lab")
-    pass
-
-
 if __name__ == "__main__":
-    # run_async(create_data())
     runner.start_polling(dp)
