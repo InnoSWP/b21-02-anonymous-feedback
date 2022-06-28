@@ -75,7 +75,7 @@ async def send_welcome(message: types.Message, state: FSMContext):
 
 @dp.message_handler()
 async def handle_message(message: types.Message):
-    session_id = redis_state.get(message.from_user.id)
+    session_id = int(redis_state.get(message.from_user.id))
     if session_id:
         saved_message = await Message.create(
             message=message.text, session_id=session_id
