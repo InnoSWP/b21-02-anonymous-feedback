@@ -7,10 +7,12 @@ import NoMessages from "./NoMessages";
 import { Messages } from "./Messages";
 import { useCallback, useState } from "react";
 import useNotificationPermission from "./useNotificationPermission";
+import { useNavigate } from "react-router";
 
 const SessionView = () => {
   const notificationPermission = useNotificationPermission();
   const session = useSession();
+  const navigate = useNavigate();
 
   const [hasCopiedLink, setHasCopiedLink] = useState(false);
   const copyJoinLink = useCallback(async () => {
@@ -18,6 +20,10 @@ const SessionView = () => {
     await navigator.clipboard.writeText(joinLink);
     setHasCopiedLink(true);
   }, [session.id]);
+
+  const handleClose = useCallback(() => {
+    navigate(`./closed`, { replace: true });
+  }, [navigate]);
 
   return (
     <>
@@ -38,6 +44,9 @@ const SessionView = () => {
               Subscribe to notifications
             </Button>
           )}
+          <Button color="red" onClick={handleClose}>
+            Close the session
+          </Button>
         </div>
       </header>
       <main className="sessionView_content">
