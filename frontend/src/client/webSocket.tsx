@@ -11,5 +11,9 @@ const makeWebSocketUrl = (pathname: string) => {
 
 const url = makeWebSocketUrl(`/graphql`);
 
-const webSocketClient = createClient({ url });
+const webSocketClient = createClient({
+  url,
+  retryAttempts: Infinity,
+  shouldRetry: () => true,
+});
 export const webSocketLink = new GraphQLWsLink(webSocketClient);
