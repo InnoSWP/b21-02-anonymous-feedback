@@ -1,4 +1,7 @@
 .session {
-  min-height: 100vh;
   background-image: linear-gradient(to bottom, white, #f7f9fd 232px);
+
+  .wrapper {
+    min-height: 100vh;
+  }
 }

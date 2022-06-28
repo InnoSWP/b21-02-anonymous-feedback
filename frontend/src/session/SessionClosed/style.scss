@@ -1,0 +1,43 @@
+@use "../../colors.scss";
+
+.sessionClosed {
+  width: 100%;
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  &_info {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  &_title {
+    margin: 0;
+    cursor: default;
+
+    color: colors.$largeSubtext;
+    font-size: 24px;
+    line-height: 32px;
+    font-weight: 500;
+  }
+
+  &_sessionName {
+    display: block;
+
+    color: colors.$text;
+    font-size: 96px;
+    font-weight: 700;
+    line-height: 128px;
+  }
+
+  &_statistics {
+    margin: 0;
+    cursor: default;
+
+    color: colors.$largeSubtext;
+    font-size: 24px;
+    line-height: 32px;
+  }
+}
