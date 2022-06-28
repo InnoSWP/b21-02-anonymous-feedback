@@ -4,6 +4,7 @@ type Query {
 
 type Mutation {
   createSession(name: String!): Session!
+  closeSession(id: ID!): Session!
 }
 
 type Subscription {
@@ -16,13 +17,25 @@ type Session {
   id: ID!
   name: String!
   created: Timestamp!
+  closed: Timestamp
   messages: [Message!]!
 }
 
 type Message {
   id: ID!
-  text: String!
   timestamp: Timestamp!
+  content: MessageContent!
+}
+
+union MessageContent = Text | Rating
+
+type Text {
+  text: String!
+}
+
+type Rating {
+  # An integer between 1 and 5
+  rating: Int!
 }
 
 # Utility types
