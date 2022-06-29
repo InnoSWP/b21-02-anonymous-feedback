@@ -17,7 +17,7 @@ class CanViewSession(BasePermission):
     message = "User has no permission to see this session"
 
     async def has_permission(
-            self, source: Any, info: Info, **kwargs
+        self, source: Any, info: Info, **kwargs
     ) -> Union[bool, Awaitable[bool]]:
         request: Union[Request, WebSocket] = info.context["request"]
         selected_field = next(
