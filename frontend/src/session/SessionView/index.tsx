@@ -7,10 +7,15 @@ import NoMessages from "./NoMessages";
 import { Messages } from "./Messages";
 import { useCallback, useState } from "react";
 import useNotificationPermission from "./useNotificationPermission";
+import { Navigate } from "react-router";
+import { Session } from "../useManageSession/types";
 
-const SessionView = () => {
+interface Props {
+  session: Session;
+}
+
+const SessionView = ({ session }: Props) => {
   const notificationPermission = useNotificationPermission();
-  const session = useSession();
 
   const [hasCopiedLink, setHasCopiedLink] = useState(false);
   const copyJoinLink = useCallback(async () => {
@@ -58,4 +63,14 @@ const SessionView = () => {
   );
 };
 
-export default SessionView;
+const Guard = () => {
+  const session = useSession();
+
+  if (session.closed) {
+    return <Navigate to="./closed" replace={true} />;
+  }
+
+  return <SessionView session={session} />;
+};
+
+export default Guard;

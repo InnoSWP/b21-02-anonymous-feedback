@@ -2,6 +2,8 @@ import "./style.scss";
 
 import { useSession } from "../Session";
 import Button from "../../Button";
+import { Session } from "../useManageSession/types";
+import { Navigate } from "react-router";
 
 const plural = (
   number: number,
@@ -12,9 +14,11 @@ const plural = (
   return `${number} ${word}`;
 };
 
-const SessionClosed = () => {
-  const session = useSession();
+interface Props {
+  session: Session;
+}
 
+const SessionClosed = ({ session }: Props) => {
   return (
     <main className="sessionClosed">
       <div className="sessionClosed_info">
@@ -31,10 +35,20 @@ const SessionClosed = () => {
         </p>
       </div>
       <div className="sessionClosed_buttons">
-        <Button to="/new-session">Create a new session</Button>
+        <Button to="/">Go to the home page</Button>
       </div>
     </main>
   );
 };
 
-export default SessionClosed;
+const Guard = () => {
+  const session = useSession();
+
+  if (!session.closed) {
+    return <Navigate to=".." replace={true} />;
+  }
+
+  return <SessionClosed session={session} />;
+};
+
+export default Guard;
