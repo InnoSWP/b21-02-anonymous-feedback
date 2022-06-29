@@ -24,7 +24,7 @@ Collect anonymous feedback from students during classes in real time. Go to <htt
 ## Feature list
 
 1. Creating feedback session
-2. Guest sessions 
+2. Guest sessions
 3. Sharing feedback session
 4. Join feedback session
 5. Sending of feedback
