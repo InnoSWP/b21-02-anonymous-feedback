@@ -1,6 +1,6 @@
 import asyncio
 import datetime
-from typing import Any, Union, Awaitable, AsyncGenerator, List
+from typing import Any, Union, Awaitable, AsyncGenerator, List, Optional
 
 import strawberry
 import asyncpg_listen
@@ -17,7 +17,7 @@ class CanViewSession(BasePermission):
     message = "User has no permission to see this session"
 
     async def has_permission(
-        self, source: Any, info: Info, **kwargs
+            self, source: Any, info: Info, **kwargs
     ) -> Union[bool, Awaitable[bool]]:
         request: Union[Request, WebSocket] = info.context["request"]
         selected_field = info.selected_fields[0]
@@ -47,7 +47,7 @@ class Mutation:
     async def close_session(self, id: strawberry.ID) -> "Session":
         deleted_session = await models.Session.get(id=id)
         await deleted_session.delete()
-        return Session.from_model(deleted_session)
+        return Session.from_model(deleted_session, closed_at=datetime.datetime.now())
 
 
 @strawberry.type
@@ -83,13 +83,16 @@ class Session:
     name: str
     created: "Timestamp"
     messages: List["Message"]
+    closed: Optional["Timestamp"] = None
 
     @classmethod
-    def from_model(cls, session: models.Session, are_messages_fetched=False):
+    def from_model(cls, session: models.Session,
+                   are_messages_fetched=False, closed_at: datetime.datetime = None):
         return Session(
             id=strawberry.ID(session.pk),
             name=session.name,
             created=Timestamp(session.created_at),
+            closed=Timestamp(closed_at),
             messages=(
                 [Message.from_model(message) for message in session.messages]
                 if are_messages_fetched
@@ -119,7 +122,7 @@ class Message:
 @strawberry.type
 class Timestamp:
     # Timestamp in ISO format
-    timestamp: datetime.time
+    timestamp: datetime.datetime
 
 
 schema = strawberry.Schema(Query, Mutation, Subscription)

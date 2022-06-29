@@ -24,7 +24,7 @@ mutation ($name: String!) {
 CLOSE_SESSION = """
 mutation ($id: ID!) {
     session: closeSession(id: $id) {
-      id, name
+      id, name, closed { timestamp }
     }
   }
 """

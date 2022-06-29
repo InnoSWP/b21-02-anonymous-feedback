@@ -31,6 +31,7 @@ async def test_close_session(client):
     response = close_session(client, session_id)
     assert response.errors is None
     assert response.data["session"]["name"] == SESSION_NAME
+    assert response.data["session"]["closed"] is not None
 
     second_response = get_session(client, session_id)
     assert second_response.data is None
