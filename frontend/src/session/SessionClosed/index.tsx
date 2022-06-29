@@ -4,7 +4,7 @@ import { useSession } from "../Session";
 import Button from "../../Button";
 import { Session } from "../types";
 import { Navigate } from "react-router";
-import { generateCsv } from "../utils";
+import { generateCsv } from "../generateCsv";
 import downloadFile from "../../downloadFile";
 import { useCallback } from "react";
 

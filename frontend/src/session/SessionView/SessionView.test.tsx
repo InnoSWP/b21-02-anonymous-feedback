@@ -3,6 +3,11 @@ import { render, screen } from "@testing-library/react";
 import { MemoryRouter, Outlet, Route, Routes } from "react-router";
 import SessionView from ".";
 
+// This is required because this file imports `csv-generate/sync`, which is an ESM module.
+// Jest 27 does not know how to import such a module. Jest 28 does, but `npm` will never
+// override Jest 27 with a newer version.
+jest.mock(`../generateCsv`);
+
 // @ts-expect-error This is only to avoid failing with `Notification is undefined`
 window.Notification = {
   permission: `default`,
