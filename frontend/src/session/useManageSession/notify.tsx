@@ -1,4 +1,4 @@
-import { SessionInfo, Message } from "./useSession";
+import { SessionInfo, Message } from "./types";
 
 import notificationSound from "./notification.wav";
 

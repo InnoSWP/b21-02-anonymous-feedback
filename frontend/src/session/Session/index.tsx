@@ -1,11 +1,12 @@
 import { Outlet, useOutletContext, useParams } from "react-router";
 import Wrapper from "../../Wrapper";
 import "./style.scss";
-import useWatchSession, { Session as ISession } from "./useSession";
+import useManageSession from "../useManageSession";
+import { Session as ISession } from "../useManageSession/types";
 
 const Session = () => {
   const id = useParams().id!;
-  const session = useWatchSession(id);
+  const session = useManageSession(id);
 
   return (
     <div className="session">

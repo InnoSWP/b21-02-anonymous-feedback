@@ -2,7 +2,7 @@ import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter, Outlet, Route, Routes } from "react-router";
 import SessionView from ".";
-import { Session } from "../Session/useSession";
+import { Session } from "../useManageSession/types";
 
 // @ts-expect-error This is only to avoid failing with `Notification is undefined`
 window.Notification = {
@@ -12,6 +12,7 @@ window.Notification = {
 test(`displays a session`, () => {
   const session: Session = {
     id: `42`,
+    closed: null,
     name: `Test session`,
     messages: [
       {
@@ -22,6 +23,9 @@ test(`displays a session`, () => {
     ],
     recentMessages: new Set(),
     removeRecentMessage() {},
+    close() {
+      return new Promise(() => {});
+    },
   };
 
   const Test = () => {

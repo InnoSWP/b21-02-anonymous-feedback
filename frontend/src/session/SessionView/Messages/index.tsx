@@ -1,7 +1,7 @@
 import "./style.scss";
 
 import Message from "../Message";
-import { Message as IMessage } from "../../Session/useSession";
+import { Message as IMessage } from "../../useManageSession/types";
 
 interface Props {
   messages: IMessage[];
