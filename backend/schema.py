@@ -96,7 +96,7 @@ class Session:
             id=strawberry.ID(session.pk),
             name=session.name,
             created=Timestamp(session.created_at),
-            closed=Timestamp(closed_at),
+            closed=Timestamp(closed_at) if closed_at is not None else None,
             messages=(
                 [Message.from_model(message) for message in session.messages]
                 if are_messages_fetched
