@@ -1,7 +1,7 @@
 import { gql, useSubscription } from "@apollo/client";
-import { Message } from "./types";
+import { Message } from "../types";
 import { Message as RawMessage } from "../../types";
-import { processMessage } from "./utils";
+import { processMessage } from "../utils";
 
 const SUBSCRIPTION = gql`
   subscription ($id: ID!) {

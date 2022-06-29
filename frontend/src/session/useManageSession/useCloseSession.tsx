@@ -1,7 +1,7 @@
 import { gql, useMutation } from "@apollo/client";
 import { useCallback } from "react";
 import { Session } from "../../types";
-import { processTimestamp } from "./utils";
+import { processTimestamp } from "../utils";
 
 const CLOSE_SESSION = gql`
   mutation ($id: ID!) {

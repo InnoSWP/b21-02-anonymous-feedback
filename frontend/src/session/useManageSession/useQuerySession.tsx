@@ -1,7 +1,7 @@
 import { gql, useQuery } from "@apollo/client";
 import { Session as RawSession } from "../../types";
-import { Message, SessionInfo } from "./types";
-import { processMessage, processTimestamp } from "./utils";
+import { Message, SessionInfo } from "../types";
+import { processMessage, processTimestamp } from "../utils";
 
 const SESSION_QUERY = gql`
   query ($id: ID!) {

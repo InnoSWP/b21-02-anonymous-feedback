@@ -2,7 +2,7 @@ import "./style.scss";
 
 import { useSession } from "../Session";
 import Button from "../../Button";
-import { Session } from "../useManageSession/types";
+import { Session } from "../types";
 import { Navigate } from "react-router";
 
 const plural = (

@@ -2,7 +2,7 @@ import { Outlet, useOutletContext, useParams } from "react-router";
 import Wrapper from "../../Wrapper";
 import "./style.scss";
 import useManageSession from "../useManageSession";
-import { Session as ISession } from "../useManageSession/types";
+import { Session as ISession } from "../types";
 
 const Session = () => {
   const id = useParams().id!;
