@@ -46,10 +46,6 @@
   &.-error &_dot {
     fill: colors.$red;
   }
-
-  &:not(.-animating) &_dot {
-    animation-play-state: paused;
-  }
 }
 
 @keyframes bubble {

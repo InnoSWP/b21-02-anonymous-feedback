@@ -4,7 +4,7 @@ query ($id: ID!) {
       name
       messages {
         id
-        text
+        content {... on Text {text} ... on Rating {rating}}
         timestamp {
           timestamp
         }
@@ -21,11 +21,19 @@ mutation ($name: String!) {
   }
 """
 
+CLOSE_SESSION = """
+mutation ($id: ID!) {
+    session: closeSession(id: $id) {
+      id, name, closed { timestamp }
+    }
+  }
+"""
+
 WATCH_SESSION = """
 subscription ($id: ID!) {
     message: watchSession(id: $id) {
       id
-      text
+      content {... on Text {text} ... on Rating {rating}}
       timestamp {
         timestamp
       }
