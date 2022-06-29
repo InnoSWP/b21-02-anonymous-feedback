@@ -4,6 +4,9 @@ import { useSession } from "../Session";
 import Button from "../../Button";
 import { Session } from "../types";
 import { Navigate } from "react-router";
+import { generateCsv } from "../utils";
+import downloadFile from "../../downloadFile";
+import { useCallback } from "react";
 
 const plural = (
   number: number,
@@ -19,6 +22,11 @@ interface Props {
 }
 
 const SessionClosed = ({ session }: Props) => {
+  const handleExport = useCallback(() => {
+    const csv = generateCsv(session);
+    downloadFile({ fileName: `${session.name}.csv`, contents: csv });
+  }, [session]);
+
   return (
     <main className="sessionClosed">
       <div className="sessionClosed_info">
@@ -35,6 +43,9 @@ const SessionClosed = ({ session }: Props) => {
         </p>
       </div>
       <div className="sessionClosed_buttons">
+        <Button size="big" onClick={handleExport}>
+          Export the session to a .csv file
+        </Button>
         <Button to="/">Go to the home page</Button>
       </div>
     </main>
