@@ -6,6 +6,7 @@ from helpers import (
     watch_session,
     create_message,
     get_subscription_message,
+    close_session,
 )
 from backend.config import GRAPHQL_ENDPOINT
 
@@ -23,6 +24,18 @@ async def test_get_session(client):
     response = get_session(client, session_id)
     assert response.errors is None
     assert response.data["session"]["name"] == SESSION_NAME
+
+
+async def test_close_session(client):
+    session_id = create_session(client, SESSION_NAME).data["session"]["id"]
+    response = close_session(client, session_id)
+    assert response.errors is None
+    assert response.data["session"]["name"] == SESSION_NAME
+    assert response.data["session"]["closed"] is not None
+
+    second_response = get_session(client, session_id)
+    assert second_response.data is None
+    assert second_response.errors[0]["message"] == "Object does not exist"
 
 
 async def test_watch_session(client):
@@ -54,6 +67,9 @@ async def test_session_visibility(client):
     assert response.errors is None
     assert response.data["session"]["name"] == SESSION_NAME
     client.cookies.clear()
-    response = get_session(client, session_id)
-    assert response.data is None
-    assert response.errors[0]["message"] == "User has no permission to see this session"
+    second_response = get_session(client, session_id)
+    assert second_response.data is None
+    assert (
+        second_response.errors[0]["message"]
+        == "User has no permission to see this session"
+    )

@@ -37,6 +37,10 @@ def create_session(client: TestClient, session_name: str) -> GraphQLResponse:
     )
 
 
+def close_session(client: TestClient, session_id: str):
+    return execute(client, queries.CLOSE_SESSION, variable_values={"id": session_id})
+
+
 def get_session(client: TestClient, session_id: str) -> GraphQLResponse:
     return execute(client, queries.GET_SESSION, variable_values={"id": session_id})
 
