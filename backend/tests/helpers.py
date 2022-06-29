@@ -45,16 +45,21 @@ def get_session(client: TestClient, session_id: str) -> GraphQLResponse:
     return execute(client, queries.GET_SESSION, variable_values={"id": session_id})
 
 
-async def create_message(message_text: str, session_id: int) -> int:
+async def create_message(
+    session_id: int,
+    message_text: typing.Optional[str] = None,
+    rating: typing.Optional[int] = None,
+) -> int:
     conn = await asyncpg.connect(POSTGRES_URI)
     result: typing.List[asyncpg.Record]
     # Tortoise does not want to insert a new message for some reason, so I did this:
     result = await conn.fetch(
         """
-        INSERT INTO "message" ("message","timestamp","session_id") VALUES
-        ($1,CURRENT_TIMESTAMP,$2) RETURNING "id"
+        INSERT INTO "message" ("message","rating","timestamp","session_id") VALUES
+        ($1,$2,CURRENT_TIMESTAMP,$3) RETURNING "id"
     """,
         message_text,
+        rating,
         session_id,
     )
     message_id = result[0].get("id")

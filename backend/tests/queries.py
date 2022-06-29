@@ -4,7 +4,7 @@ query ($id: ID!) {
       name
       messages {
         id
-        text
+        content {... on Text {text} ... on Rating {rating}}
         timestamp {
           timestamp
         }
@@ -33,7 +33,7 @@ WATCH_SESSION = """
 subscription ($id: ID!) {
     message: watchSession(id: $id) {
       id
-      text
+      content {... on Text {text} ... on Rating {rating}}
       timestamp {
         timestamp
       }

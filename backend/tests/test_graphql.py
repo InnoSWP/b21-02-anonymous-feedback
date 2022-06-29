@@ -46,11 +46,18 @@ async def test_watch_session(client):
     ) as websocket:
         watch_session(websocket, str(session_id))
         message_text = "Hi"
-        message_id = await create_message(message_text, session_id)
+        message_id = await create_message(session_id, message_text)
         response = get_subscription_message(websocket)
         assert response.errors is None
         assert int(response.data["message"]["id"]) == message_id
-        assert response.data["message"]["text"] == message_text
+        assert response.data["message"]["content"]["text"] == message_text
+
+        message_rating = 5
+        message_id = await create_message(session_id, rating=message_rating)
+        response = get_subscription_message(websocket)
+        assert response.errors is None
+        assert int(response.data["message"]["id"]) == message_id
+        assert int(response.data["message"]["content"]["rating"]) == message_rating
         websocket.close()
 
 
