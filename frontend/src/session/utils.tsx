@@ -16,7 +16,10 @@ export const processMessage = ({
 });
 
 export const generateCsv = (session: Session): string => {
-  const rows = [["Session name", session.name]];
+  const rows = [
+    ["Session name", session.name],
+    ["Created at", session.created.toISOString()],
+  ];
 
   if (session.closed) {
     rows.push(["Closed at", session.closed.toISOString()]);
