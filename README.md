@@ -31,7 +31,6 @@ Collect anonymous feedback from students during classes in real time. Go to <htt
 6. Export sessions
 7. Show connection status
 
-
 ## Run locally
 
 Before following the steps, ensure that you have Docker installed.
