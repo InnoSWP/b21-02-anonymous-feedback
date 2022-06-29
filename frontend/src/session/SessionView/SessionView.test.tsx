@@ -12,6 +12,7 @@ window.Notification = {
 test(`displays a session`, () => {
   const session: Session = {
     id: `42`,
+    closed: null,
     name: `Test session`,
     messages: [
       {

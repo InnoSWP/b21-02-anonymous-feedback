@@ -1,12 +1,15 @@
-import { Message as RawMessage } from "../../types";
+import { Message as RawMessage, Timestamp } from "../../types";
 import { Message } from "./types";
+
+export const processTimestamp = ({ timestamp }: Timestamp) =>
+  new Date(timestamp);
 
 export const processMessage = ({
   id,
   text,
-  timestamp: { timestamp },
+  timestamp,
 }: RawMessage): Message => ({
   id,
   text,
-  timestamp: new Date(timestamp),
+  timestamp: processTimestamp(timestamp),
 });

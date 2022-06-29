@@ -1,6 +1,7 @@
 export interface SessionInfo {
   id: string;
   name: string;
+  closed: Date | null;
 }
 
 export interface Message {

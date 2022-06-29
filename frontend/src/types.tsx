@@ -2,6 +2,7 @@ export interface Session {
   id: string;
   name: string;
   created: Timestamp;
+  closed: Timestamp | null;
   messages: Message[];
 }
 
