@@ -14,4 +14,5 @@ export interface Session extends SessionInfo {
   messages: Message[];
   recentMessages: Set<Message>;
   removeRecentMessage(message: Message): void;
+  close(): Promise<void>;
 }

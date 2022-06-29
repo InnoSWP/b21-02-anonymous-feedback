@@ -3,6 +3,7 @@ import { Message, Session, SessionInfo } from "./types";
 import notify from "./notify";
 import useQuerySession from "./useQuerySession";
 import useWatchMessages from "./useWatchMessages";
+import useCloseSession from "./useCloseSession";
 
 const useManageSession = (id: string): Session | null => {
   const [sessionInfo, setSessionInfo] = useState<SessionInfo | null>(null);
@@ -40,15 +41,37 @@ const useManageSession = (id: string): Session | null => {
   );
   useWatchMessages({ id, onNewMessage: handleNewMessage });
 
-  const session = useMemo(() => {
+  const callCloseSession = useCloseSession({ id });
+  const closeSession = useCallback(async () => {
+    const closed = await callCloseSession();
+    setSessionInfo((oldSessionInfo) => {
+      if (!oldSessionInfo) {
+        return null;
+      }
+
+      return { ...oldSessionInfo, closed };
+    });
+  }, [callCloseSession]);
+
+  return useMemo(() => {
     if (sessionInfo) {
-      return { ...sessionInfo, messages, recentMessages, removeRecentMessage };
+      return {
+        ...sessionInfo,
+        messages,
+        recentMessages,
+        removeRecentMessage,
+        close: closeSession,
+      };
     }
 
     return null;
-  }, [messages, recentMessages, removeRecentMessage, sessionInfo]);
-
-  return session;
+  }, [
+    closeSession,
+    messages,
+    recentMessages,
+    removeRecentMessage,
+    sessionInfo,
+  ]);
 };
 
 export default useManageSession;

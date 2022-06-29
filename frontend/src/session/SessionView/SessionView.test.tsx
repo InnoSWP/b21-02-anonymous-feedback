@@ -23,6 +23,9 @@ test(`displays a session`, () => {
     ],
     recentMessages: new Set(),
     removeRecentMessage() {},
+    close() {
+      return new Promise(() => {});
+    },
   };
 
   const Test = () => {
