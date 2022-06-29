@@ -119,7 +119,9 @@ async def send_star_rating(call: types.CallbackQuery):
         session_id = int(session_id)
         logging.info(f"get callback: {session_id}.")
         session = await Session.get_or_none(pk=session_id)
-        saved_message = await Message.create(rating=rating, session_id=session_id)
+        saved_message = await Message.create(
+            rating=rating, session_id=session_id
+        )  # noqa
         conn = await asyncpg.connect("postgres://postgres:password@db:5432/")
         await conn.execute(
             f"""
@@ -164,7 +166,8 @@ async def handle_message(message: types.Message):
         )
     else:
         await message.answer(
-            "You have not joined any session yet!\n\n Use `/start <session-id>`.",
+            "You have not joined any session yet!\n\n"
+            "Use `/start <session-id>`.",  # noqa
             parse_mode=types.ParseMode.MARKDOWN,
         )
 
