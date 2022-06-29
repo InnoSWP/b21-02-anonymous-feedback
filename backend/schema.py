@@ -17,7 +17,7 @@ class CanViewSession(BasePermission):
     message = "User has no permission to see this session"
 
     async def has_permission(
-            self, source: Any, info: Info, **kwargs
+        self, source: Any, info: Info, **kwargs
     ) -> Union[bool, Awaitable[bool]]:
         request: Union[Request, WebSocket] = info.context["request"]
         selected_field = info.selected_fields[0]
@@ -86,8 +86,12 @@ class Session:
     closed: Optional["Timestamp"] = None
 
     @classmethod
-    def from_model(cls, session: models.Session,
-                   are_messages_fetched=False, closed_at: datetime.datetime = None):
+    def from_model(
+        cls,
+        session: models.Session,
+        are_messages_fetched=False,
+        closed_at: datetime.datetime = None,
+    ):
         return Session(
             id=strawberry.ID(session.pk),
             name=session.name,
