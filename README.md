@@ -21,6 +21,20 @@ Collect anonymous feedback from students during classes in real time. Go to <htt
 3. Share the join link with students
 4. Collect feedback from students
 
+## Feature list
+
+1. Creating feedback session
+2. Guest sessions 
+3. Sharing feedback session
+4. Join feedback session
+5. Sending of feedback
+6. Receiving feedback
+7. Feedback notifications
+8. History of closed sessions
+9. Having filtered messages in separated section
+10. Show connection status
+11. Deploy the project
+
 ## Run locally
 
 Before following the steps, ensure that you have Docker installed.
