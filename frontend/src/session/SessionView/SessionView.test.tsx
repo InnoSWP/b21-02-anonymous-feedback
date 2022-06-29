@@ -2,7 +2,7 @@ import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter, Outlet, Route, Routes } from "react-router";
 import SessionView from ".";
-import { Session } from "../Session/useSession";
+import { Session } from "../useManageSession/types";
 
 // @ts-expect-error This is only to avoid failing with `Notification is undefined`
 window.Notification = {

@@ -1,6 +1,6 @@
 import "./style.scss";
 
-import { Message as IMessage } from "../../Session/useSession";
+import { Message as IMessage } from "../../useManageSession/types";
 import classNames from "classnames";
 import useDisplayAge from "./useDisplayAge";
 
