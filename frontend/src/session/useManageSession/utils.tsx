@@ -6,10 +6,10 @@ export const processTimestamp = ({ timestamp }: Timestamp) =>
 
 export const processMessage = ({
   id,
-  text,
   timestamp,
+  content,
 }: RawMessage): Message => ({
   id,
-  text,
   timestamp: processTimestamp(timestamp),
+  content,
 });

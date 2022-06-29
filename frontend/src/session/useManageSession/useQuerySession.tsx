@@ -12,9 +12,16 @@ const SESSION_QUERY = gql`
       }
       messages {
         id
-        text
         timestamp {
           timestamp
+        }
+        content {
+          ... on Text {
+            text
+          }
+          ... on Rating {
+            rating
+          }
         }
       }
     }

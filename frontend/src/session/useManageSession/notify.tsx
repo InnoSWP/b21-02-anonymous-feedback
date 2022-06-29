@@ -14,7 +14,11 @@ const notify = (session: SessionInfo, message: Message) => {
     return;
   }
 
-  new Notification(`New feedback in ${session.name}`, { body: message.text });
+  const body =
+    `text` in message.content
+      ? message.content.text
+      : `⭐`.repeat(message.content.rating);
+  new Notification(`New feedback in ${session.name}`, { body });
 };
 
 export default notify;
