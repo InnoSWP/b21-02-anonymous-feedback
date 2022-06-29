@@ -1,3 +1,5 @@
+import { MessageContent } from "../../types";
+
 export interface SessionInfo {
   id: string;
   name: string;
@@ -6,8 +8,8 @@ export interface SessionInfo {
 
 export interface Message {
   id: string;
-  text: string;
   timestamp: Date;
+  content: MessageContent;
 }
 
 export interface Session extends SessionInfo {

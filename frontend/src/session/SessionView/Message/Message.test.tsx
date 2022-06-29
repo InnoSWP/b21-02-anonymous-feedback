@@ -6,22 +6,22 @@ import Message from ".";
 test(`shows message text`, () => {
   const message = {
     id: `1`,
-    text: `Test message`,
     timestamp: new Date(),
+    content: { text: `Test message` },
   };
 
   const handleDated = jest.fn();
   render(<Message message={message} isRecent={false} onDated={handleDated} />);
 
-  const messageElement = screen.getByText(message.text);
+  const messageElement = screen.getByText(message.content.text);
   expect(messageElement).toBeInTheDocument();
 });
 
 test(`shows message age`, () => {
   const message = {
     id: `1`,
-    text: `Test message`,
     timestamp: subSeconds(Date.now(), 7),
+    content: { text: `Test message` },
   };
 
   const handleDated = jest.fn();

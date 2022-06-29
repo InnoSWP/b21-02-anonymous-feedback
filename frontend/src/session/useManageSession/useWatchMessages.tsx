@@ -7,9 +7,16 @@ const SUBSCRIPTION = gql`
   subscription ($id: ID!) {
     message: watchSession(id: $id) {
       id
-      text
       timestamp {
         timestamp
+      }
+      content {
+        ... on Text {
+          text
+        }
+        ... on Rating {
+          rating
+        }
       }
     }
   }
