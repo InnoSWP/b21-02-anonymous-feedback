@@ -25,6 +25,15 @@ const SessionView = ({ session }: Props) => {
     setHasCopiedLink(true);
   }, [session.id]);
 
+  const handleClose = useCallback(() => {
+    const hasConfirmed = window.confirm(
+      `Are you sure you want to close the session?`
+    );
+    if (hasConfirmed) {
+      session.close();
+    }
+  }, [session]);
+
   return (
     <>
       <header className="sessionView_header">
@@ -52,7 +61,7 @@ const SessionView = ({ session }: Props) => {
               Subscribe to notifications
             </Button>
           )}
-          <Button color="red" onClick={session.close}>
+          <Button color="red" onClick={handleClose}>
             Close the session
           </Button>
         </div>
