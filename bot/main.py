@@ -27,8 +27,7 @@ for (
     callback_data,
     nth_star,
 ) in star_callbacks.items():
-    # TODO: check
-    star_keyboard = star_keyboard.add(
+    star_keyboard.add(
         InlineKeyboardButton(text="⭐" * nth_star, callback_data=callback_data)
     )
 
@@ -110,6 +109,16 @@ async def get_star_keyboard(call: types.CallbackQuery):
     await call.answer()
 
 
+async def notify_about_new_message(session_id, message):
+    conn = Tortoise.get_connection("default")
+    await conn.execute_script(
+        f"""
+        NOTIFY "{session_id}", '{message.pk}';
+    """
+    )
+    await conn.close()
+
+
 @dp.callback_query_handler(text=star_callbacks.keys())
 async def send_star_rating(call: types.CallbackQuery):
     logging.info(f"get callback: {call.data}.")
@@ -126,13 +135,7 @@ async def send_star_rating(call: types.CallbackQuery):
         # saved_message = await Message.create(
         #     rating=rating, session_id=session_id
         # )  # noqa
-        conn = await asyncpg.connect("postgres://postgres:password@db:5432/")
-        await conn.execute(
-            f"""
-            NOTIFY "{session_id}", '{saved_message.pk}';
-        """
-        )
-        await conn.close()
+        await notify_about_new_message(session_id, saved_message)
         text = (
             f'You rated "{session.name}" with {rating} '
             f"{'star' if rating == 1 else 'stars'}!"
@@ -156,13 +159,7 @@ async def handle_message(message: types.Message):
         saved_message = await Message.create(
             message=message.text, session_id=session_id
         )
-        conn = await asyncpg.connect("postgres://postgres:password@db:5432/")
-        await conn.execute(
-            f"""
-            NOTIFY "{session_id}", '{saved_message.pk}';
-        """
-        )
-        await conn.close()
+        await notify_about_new_message(session_id, saved_message)
         await message.answer(
             "Feedback sent!\n\n"
             "You can send more messages to the TA by simply texting it to me. "
