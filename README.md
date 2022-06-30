@@ -21,11 +21,13 @@ Collect anonymous feedback from students during classes in real time. Go to <htt
 2. Create a guest session
 3. Share the join link with students
 4. Collect feedback from students
+5. Close the session
+6. Export the session
 
 **For student:**
-1. Go to join link sent by the instructor 
-2. Сlick on the "start" button
-3. Leave feedback
+1. Follow the join link sent by the instructor 
+2. Сlick on the start button
+3. Send feedback
 
 ## Feature list
 
