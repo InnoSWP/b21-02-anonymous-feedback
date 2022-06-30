@@ -9,6 +9,7 @@ import { useCallback, useState } from "react";
 import useNotificationPermission from "./useNotificationPermission";
 import { Navigate } from "react-router";
 import { Session } from "../types";
+import Rating from "./Rating";
 
 interface Props {
   session: Session;
@@ -27,7 +28,15 @@ const SessionView = ({ session }: Props) => {
   return (
     <>
       <header className="sessionView_header">
-        <h1 className="sessionView_name">{session.name}</h1>
+        <div className="sessionView_info">
+          <h1 className="sessionView_name">{session.name}</h1>
+          {session.averageRating !== null && (
+            <div className="sessionView_rating">
+              <Rating rating={session.averageRating} id="sessionAverage" />
+              {session.averageRating.toFixed(1)}
+            </div>
+          )}
+        </div>
         <div className="sessionView_controls">
           {hasCopiedLink && (
             <p
