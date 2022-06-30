@@ -127,13 +127,7 @@ async def send_star_rating(call: types.CallbackQuery):
         session_id = int(session_id)
         logging.info(f"get callback: {session_id}.")
         session = await Session.get_or_none(pk=session_id)
-        # TODO: Replace with rating
-        saved_message = await Message.create(
-            message="⭐" * rating, session_id=session_id
-        )  # noqa
-        # saved_message = await Message.create(
-        #     rating=rating, session_id=session_id
-        # )  # noqa
+        saved_message = await Message.create(rating=rating, session_id=session_id)
         await notify_about_new_message(session_id, saved_message)
         text = (
             f'You rated "{session.name}" with {rating} '
