@@ -16,10 +16,16 @@ Collect anonymous feedback from students during classes in real time. Go to <htt
 
 ## How to use
 
+**For instructor:**
 1. Go to <https://anonymous-feedback.snejugal.ru>
 2. Create a guest session
 3. Share the join link with students
 4. Collect feedback from students
+
+**For student:**
+1. Go to the link sent by the instructor 
+2. Сlick on the "start" button
+3. Leave feedback
 
 ## Feature list
 
