@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useState } from "react";
-import { Message, Session, SessionInfo } from "./types";
+import { Message, Session, SessionInfo } from "../types";
 import notify from "./notify";
 import useQuerySession from "./useQuerySession";
 import useWatchMessages from "./useWatchMessages";

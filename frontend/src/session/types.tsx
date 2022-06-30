@@ -1,8 +1,9 @@
-import { MessageContent } from "../../types";
+import { MessageContent } from "../types";
 
 export interface SessionInfo {
   id: string;
   name: string;
+  created: Date;
   closed: Date | null;
 }
 

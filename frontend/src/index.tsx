@@ -1,3 +1,4 @@
+import "./polyfillBuffer";
 import { ApolloProvider } from "@apollo/client";
 import React from "react";
 import ReactDom from "react-dom/client";

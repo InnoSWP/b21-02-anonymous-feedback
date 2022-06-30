@@ -8,7 +8,7 @@ import { Messages } from "./Messages";
 import { useCallback, useState } from "react";
 import useNotificationPermission from "./useNotificationPermission";
 import { Navigate } from "react-router";
-import { Session } from "../useManageSession/types";
+import { Session } from "../types";
 
 interface Props {
   session: Session;

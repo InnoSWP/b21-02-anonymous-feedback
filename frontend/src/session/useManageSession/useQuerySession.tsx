@@ -1,12 +1,15 @@
 import { gql, useQuery } from "@apollo/client";
 import { Session as RawSession } from "../../types";
-import { Message, SessionInfo } from "./types";
-import { processMessage, processTimestamp } from "./utils";
+import { Message, SessionInfo } from "../types";
+import { processMessage, processTimestamp } from "../utils";
 
 const SESSION_QUERY = gql`
   query ($id: ID!) {
     session(id: $id) {
       name
+      created {
+        timestamp
+      }
       closed {
         timestamp
       }
@@ -29,7 +32,7 @@ const SESSION_QUERY = gql`
 `;
 
 interface Result {
-  session: Pick<RawSession, "name" | "closed" | "messages">;
+  session: Pick<RawSession, "name" | "created" | "closed" | "messages">;
 }
 
 interface Variables {
@@ -45,10 +48,11 @@ interface Props {
 const useQuerySession = ({ id, onMessages, onSessionInfo }: Props) => {
   useQuery<Result, Variables>(SESSION_QUERY, {
     variables: { id },
-    onCompleted({ session: { name, closed, messages: newMessages } }) {
+    onCompleted({ session: { name, created, closed, messages: newMessages } }) {
       onMessages(newMessages.map(processMessage));
       onSessionInfo({
         id,
+        created: processTimestamp(created),
         closed: closed && processTimestamp(closed),
         name,
       });
