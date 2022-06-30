@@ -75,8 +75,6 @@ services:
       - POSTGRES_HOST=db-test
       - SECRET_KEY
       - PYTHONPATH=/app
-    profiles:
-      - test
     volumes:
       - ${DOCKER_PROJECT_PATH:-.}/backend:/app/backend
       - ${DOCKER_PROJECT_PATH:-.}/db:/app/db
