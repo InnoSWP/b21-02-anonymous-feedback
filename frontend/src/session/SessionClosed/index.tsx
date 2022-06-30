@@ -44,7 +44,7 @@ const SessionClosed = ({ session }: Props) => {
       </div>
       <div className="sessionClosed_buttons">
         <Button size="big" onClick={handleExport}>
-          Export the session to a .csv file
+          Export the session to .csv
         </Button>
         <Button to="/">Go to the home page</Button>
       </div>
