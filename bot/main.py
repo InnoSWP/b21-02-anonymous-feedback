@@ -6,7 +6,6 @@ from aiogram.dispatcher import FSMContext
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from redis import Redis
 from tortoise import Tortoise
-import asyncpg
 
 import config
 from db.models import Session, Message
