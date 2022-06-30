@@ -155,19 +155,29 @@ async def handle_message(message: types.Message):
     session_id = redis_state.get(message.from_user.id)
     if session_id:
         session_id = int(session_id)
-        saved_message = await Message.create(
-            message=message.text, session_id=session_id
-        )
-        await notify_about_new_message(session_id, saved_message)
-        await message.answer(
-            "Feedback sent!\n\n"
-            "You can send more messages to the TA by simply texting it to me. "
-            "Consider scheduling messages to stay unnoticed."
-        )
+        session = await Session.exists(pk=session_id)
+        if session:
+            saved_message = await Message.create(
+                message=message.text, session_id=session_id
+            )
+            await notify_about_new_message(session_id, saved_message)
+            await message.answer(
+                "Feedback sent!\n\n"
+                "You can send more messages to the TA by simply texting it to me. "
+                "Consider scheduling messages to stay unnoticed."
+            )
+        else:
+            await message.answer(
+                (
+                    f"Oh, it seems that session with id {session_id} does not exist!\n\n"
+                    "Probably, it was closed. "
+                    "Use `/start <session-id>` to join new session."
+                ),
+                parse_mode=types.ParseMode.MARKDOWN,
+            )
     else:
         await message.answer(
-            "You have not joined any session yet!\n\n"
-            "Use `/start <session-id>`.",  # noqa
+            "You have not joined any session yet!\n\n" "Use `/start <session-id>`.",
             parse_mode=types.ParseMode.MARKDOWN,
         )
 
