@@ -1,6 +1,7 @@
 # [Anonymous Feedback](https://anonymous-feedback.snejugal.ru)
 
 [![GitHub Super-Linter](https://github.com/InnoSWP/b21-02-anonymous-feedback/workflows/Lint%20Code%20Base/badge.svg)](https://github.com/marketplace/actions/super-linter)
+![GitHub](https://img.shields.io/github/license/InnoSWP/b21-02-anonymous-feedback)
 
 Collect anonymous feedback from students during classes in real time. Go to <https://anonymous-feedback.snejugal.ru> to get started!
 
