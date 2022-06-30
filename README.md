@@ -46,13 +46,7 @@ Before following the steps, ensure that you have Docker installed.
 
 1. Create `.env` according to [`example.env`](./example.env);
 
-2. Create `data/pgdata/` in project root directory:
-
-    ```sh
-    mkdir -p data/pgdata
-    ```
-
-3. To run the project, run the following command:
+2. To run the project, run the following command:
 
     ```bash
     docker compose up
