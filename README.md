@@ -35,7 +35,7 @@ Collect anonymous feedback from students during classes in real time. Go to <htt
 2. Sharing feedback session
 3. Join feedback session
 4. Leaving feedback
-5. Feedback notifications
+5. Notifications of the feedback
 6. Export sessions
 7. Show connection status
 
