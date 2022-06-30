@@ -4,6 +4,7 @@ import notify from "./notify";
 import useQuerySession from "./useQuerySession";
 import useWatchMessages from "./useWatchMessages";
 import useCloseSession from "./useCloseSession";
+import useAverageRating from "./useAverageRating";
 
 const useManageSession = (id: string): Session | null => {
   const [sessionInfo, setSessionInfo] = useState<SessionInfo | null>(null);
@@ -20,10 +21,19 @@ const useManageSession = (id: string): Session | null => {
     []
   );
 
+  const averageRating = useAverageRating();
+
+  const handleMessages = useCallback(
+    (messages: Message[]) => {
+      setMessages(messages);
+      averageRating.calculate(messages);
+    },
+    [averageRating]
+  );
   useQuerySession({
     id,
     onSessionInfo: setSessionInfo,
-    onMessages: setMessages,
+    onMessages: handleMessages,
   });
 
   const handleNewMessage = useCallback(
@@ -32,12 +42,13 @@ const useManageSession = (id: string): Session | null => {
         (oldRecentMessages) => new Set([...oldRecentMessages, message])
       );
       setMessages((oldMessages) => [...oldMessages, message]);
+      averageRating.update(message);
 
       if (sessionInfo !== null) {
         notify(sessionInfo, message);
       }
     },
-    [sessionInfo]
+    [averageRating, sessionInfo]
   );
   useWatchMessages({ id, onNewMessage: handleNewMessage });
 
@@ -57,6 +68,7 @@ const useManageSession = (id: string): Session | null => {
     if (sessionInfo) {
       return {
         ...sessionInfo,
+        averageRating: averageRating.rating,
         messages,
         recentMessages,
         removeRecentMessage,
@@ -66,6 +78,7 @@ const useManageSession = (id: string): Session | null => {
 
     return null;
   }, [
+    averageRating.rating,
     closeSession,
     messages,
     recentMessages,

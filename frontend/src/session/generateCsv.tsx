@@ -11,6 +11,10 @@ export const generateCsv = (session: Session): string => {
     rows.push(["Closed at", session.closed.toISOString()]);
   }
 
+  if (session.averageRating) {
+    rows.push(["Average rating", String(session.averageRating)]);
+  }
+
   rows.push([], ["Feedback type", "Content", "Time"]);
 
   for (const message of session.messages) {

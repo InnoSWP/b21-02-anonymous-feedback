@@ -3,6 +3,7 @@ import "./style.scss";
 import { Message as IMessage } from "../../types";
 import classNames from "classnames";
 import useDisplayAge from "./useDisplayAge";
+import Rating from "../Rating";
 
 interface Props {
   message: IMessage;
@@ -20,6 +21,9 @@ const Message = ({ message, isRecent, onDated }: Props) => {
         onAnimationEnd={onDated}
       >
         {`text` in message.content && message.content.text}
+        {`rating` in message.content && (
+          <Rating rating={message.content.rating} id={`message${message.id}`} />
+        )}
       </p>
       <p className="message_age">{age}</p>
     </li>

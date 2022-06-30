@@ -14,6 +14,7 @@ export interface Message {
 }
 
 export interface Session extends SessionInfo {
+  averageRating: number | null;
   messages: Message[];
   recentMessages: Set<Message>;
   removeRecentMessage(message: Message): void;

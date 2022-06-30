@@ -9,6 +9,12 @@
     margin: 0 0 64px;
   }
 
+  &_info {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+
   &_name {
     font-size: 48px;
     line-height: 64px;
@@ -16,6 +22,16 @@
 
     margin: 0;
     cursor: default;
+  }
+
+  &_rating {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    font-size: 18px;
+    line-height: 24px;
+    font-weight: 700;
   }
 
   &_controls {

@@ -25,6 +25,7 @@ test(`displays a session`, () => {
         content: { text: `Test message` },
       },
     ],
+    averageRating: null,
     recentMessages: new Set(),
     removeRecentMessage() {},
     close() {
