@@ -23,7 +23,7 @@ Collect anonymous feedback from students during classes in real time. Go to <htt
 4. Collect feedback from students
 
 **For student:**
-1. Go to the link sent by the instructor 
+1. Go to join link sent by the instructor 
 2. Сlick on the "start" button
 3. Leave feedback
 
