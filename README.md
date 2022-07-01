@@ -1,18 +1,23 @@
 # [Anonymous Feedback](https://anonymous-feedback.snejugal.ru)
 
 [![GitHub Super-Linter](https://github.com/InnoSWP/b21-02-anonymous-feedback/workflows/Lint%20Code%20Base/badge.svg)](https://github.com/marketplace/actions/super-linter)
+![GitHub](https://img.shields.io/github/license/InnoSWP/b21-02-anonymous-feedback)
 
 Collect anonymous feedback from students during classes in real time. Go to <https://anonymous-feedback.snejugal.ru> to get started!
 
 ## Screenshots
 
-### Landing page
+### Home screen
 
-![A screenshot of the landing page](./screenshots/landingPage.png)
+![A screenshot of the landing page](./screenshots/home-screen.png)
 
-### Feedback session page
+### Feedback session
 
-![A screenshot of the feedback session page](./screenshots/sessionPage.png)
+![A screenshot of the feedback session page](./screenshots/session.png)
+
+### Closed session
+
+![A screenshot of the closed session page](./screenshots/closed-session.png)
 
 ## How to use
 
@@ -25,7 +30,7 @@ Collect anonymous feedback from students during classes in real time. Go to <htt
 6. Export the session
 
 **For student:**
-1. Follow the join link sent by the instructor 
+1. Follow the join link sent by the instructor
 2. Сlick on the start button
 3. Send feedback
 
@@ -35,7 +40,7 @@ Collect anonymous feedback from students during classes in real time. Go to <htt
 2. Sharing feedback session
 3. Join feedback session
 4. Leaving feedback
-5. Feedback notifications
+5. Notifications about incoming feedback
 6. Export sessions
 7. Show connection status
 
@@ -45,13 +50,7 @@ Before following the steps, ensure that you have Docker installed.
 
 1. Create `.env` according to [`example.env`](./example.env);
 
-2. Create `data/pgdata/` in project root directory:
-
-    ```sh
-    mkdir -p data/pgdata
-    ```
-
-3. To run the project, run the following command:
+2. To run the project, run the following command:
 
     ```bash
     docker compose up
