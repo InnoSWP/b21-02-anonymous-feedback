@@ -17,7 +17,7 @@ Collect anonymous feedback from students during classes in real time. Go to <htt
 
 ### Closed session
 
-![A screenshot of the closed session page](./screenshots/closed-session.jpg)
+![A screenshot of the closed session page](./screenshots/closed-session.png)
 
 ## How to use
 
