@@ -11,9 +11,13 @@ Collect anonymous feedback from students during classes in real time. Go to <htt
 
 ![A screenshot of the landing page](./screenshots/home-screen.png)
 
-### Feedback session page
+### Feedback session
 
 ![A screenshot of the feedback session page](./screenshots/session-page.jpg)
+
+### Closed session
+
+![A screenshot of the closed session page](./screenshots/closed-session.jpg)
 
 ## How to use
 
