@@ -7,13 +7,13 @@ Collect anonymous feedback from students during classes in real time. Go to <htt
 
 ## Screenshots
 
-### Landing page
+### Home screen
 
-![A screenshot of the landing page](./screenshots/landingPage.png)
+![A screenshot of the landing page](./screenshots/home-screen.png)
 
 ### Feedback session page
 
-![A screenshot of the feedback session page](./screenshots/sessionPage.jpg)
+![A screenshot of the feedback session page](./screenshots/session-page.jpg)
 
 ## How to use
 
@@ -26,7 +26,7 @@ Collect anonymous feedback from students during classes in real time. Go to <htt
 6. Export the session
 
 **For student:**
-1. Follow the join link sent by the instructor 
+1. Follow the join link sent by the instructor
 2. Сlick on the start button
 3. Send feedback
 
