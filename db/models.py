@@ -4,7 +4,7 @@ from tortoise.validators import MinLengthValidator, ValidationError
 
 
 class Session(Model):
-    name = fields.CharField(max_length=32, validators=[MinLengthValidator(1)])
+    name = fields.CharField(max_length=128, validators=[MinLengthValidator(1)])
     created_at = fields.DatetimeField(auto_now_add=True)
     messages: fields.ReverseRelation["Message"]
 
