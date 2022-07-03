@@ -40,9 +40,9 @@ Collect anonymous feedback from students during classes in real time. Go to <htt
 2. Sharing feedback session
 3. Join feedback session
 4. Sending feedback
-5. Notifications about incoming feedback
-6. Export sessions
-7. Show connection status
+5. Giving star rating
+6. Notifications about incoming feedback
+7. Export sessions
 
 ## Run locally
 
