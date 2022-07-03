@@ -52,6 +52,7 @@ services:
       - POSTGRES_DB
       - POSTGRES_HOST=db
       - SECRET_KEY
+      - TZ=Europe/Moscow
     volumes:
       #TODO: duplicate
       - ${DOCKER_PROJECT_PATH:-.}/backend:/app/backend
